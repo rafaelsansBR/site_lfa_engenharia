@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 325 180">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: .11em;
+      }
+
+      .cls-2 {
+        font-size: 22.48px;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-4 {
+        font-family: OutfitThin-ExtraBold, 'Outfit Thin';
+        font-variation-settings: 'wght' 800;
+        font-weight: 700;
+      }
+
+      .cls-5 {
+        fill: url(#Gradiente_sem_nome_149);
+      }
+
+      .cls-6 {
+        letter-spacing: .11em;
+      }
+
+      .cls-7 {
+        mask: url(#mask);
+      }
+
+      .cls-8 {
+        letter-spacing: .1em;
+      }
+
+      .cls-9 {
+        letter-spacing: .08em;
+      }
+
+      .cls-4 {
+        font-size: 95.38px;
+      }
+
+      .cls-10 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-11 {
+        letter-spacing: -.05em;
+      }
+    </style>
+    <mask id="mask" x="23.06" y="22.62" width="85.91" height="134.76" maskUnits="userSpaceOnUse">
+      <polygon class="cls-3" points="63.2 96.99 63.2 74.12 98.23 34.02 95.44 22.62 53.6 70.52 53.6 107.95 32.66 131.85 32.66 39.4 23.06 28.36 23.06 157.38 53.6 122.52 53.6 145.92 63.2 132.44 63.2 111.56 93.16 77.35 83.86 127.47 70.78 115.57 70.78 128.54 90.15 146.18 108.98 44.73 63.2 96.99"/>
+    </mask>
+    <linearGradient id="Gradiente_sem_nome_149" data-name="Gradiente sem nome 149" x1="23.06" y1="90" x2="108.98" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dd9b56"/>
+      <stop offset="1" stop-color="#e1b14f"/>
+    </linearGradient>
+  </defs>
+  <g class="cls-7">
+    <rect class="cls-5" x="23.06" y="22.62" width="85.91" height="134.76"/>
+  </g>
+  <text class="cls-2" transform="translate(128.86 139.75)"><tspan class="cls-1" x="0" y="0">ENGENHA</tspan><tspan class="cls-8" x="130.22" y="0">R</tspan><tspan class="cls-6" x="147.29" y="0">I</tspan><tspan class="cls-9" x="156.62" y="0">A</tspan></text>
+  <text class="cls-4" transform="translate(124.44 112.1)"><tspan x="0" y="0">L</tspan><tspan class="cls-11" x="54.08" y="0">F</tspan><tspan class="cls-10" x="106.34" y="0">A</tspan></text>
+</svg>
