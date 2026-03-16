@@ -1,129 +1,240 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Inicialização Lucide
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+  // Smooth Scroll
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute("href").substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    });
+  });
 
-    // 2. Menu Mobile Manager
-    const menu = {
-        overlay: document.getElementById("mobile-menu-overlay"),
-        trigger: document.getElementById("mobile-menu-trigger"),
-        close: document.getElementById("mobile-menu-close"),
-        links: document.querySelectorAll(".mobile-nav-link"),
-        
-        toggle(state) {
-            this.overlay.classList.toggle("hidden", !state);
-            this.overlay.classList.toggle("flex", state);
-            document.body.style.overflow = state ? "hidden" : "";
-        }
-    };
+  // Scroll Spy
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll(
+    "aside nav a, #mobile-menu-overlay nav a",
+  );
 
-    menu.trigger?.addEventListener("click", () => menu.toggle(true));
-    menu.close?.addEventListener("click", () => menu.toggle(false));
-    menu.links.forEach(link => link.addEventListener("click", () => menu.toggle(false)));
+  function onScroll() {
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
+    let currentSectionId = "hero";
 
-    // 3. Modal & Agendamento
-    const modalManager = {
-        el: document.getElementById("consultancy-modal"),
-        step1: document.getElementById("modal-step-1"),
-        step2: document.getElementById("modal-step-2"),
-        
-        open() {
-            this.el.classList.add("active");
-            this.step1.classList.remove("hidden");
-            this.step2.classList.add("hidden");
-        },
-        close() {
-            this.el.classList.remove("active");
-        }
-    };
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const section = sections[i];
+      if (section.offsetTop <= scrollPosition) {
+        currentSectionId = section.getAttribute("id");
+        break;
+      }
+    }
 
-    document.querySelectorAll('[data-section="contato"], #btn-contato-hero').forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            modalManager.open();
-        });
-    });
+    navLinks.forEach((link) => {
+      const hrefAttr = link.getAttribute("href");
+      const section =
+        link.getAttribute("data-section") ||
+        (hrefAttr && hrefAttr.startsWith("#") ? hrefAttr.substring(1) : "");
+      if (section === currentSectionId) {
+        link.classList.add("bg-[#E1B14F]", "text-black");
+        link.classList.remove(
+          "text-gray-400",
+          "hover:bg-[#E1B14F]",
+          "hover:text-black",
+        );
+      } else {
+        link.classList.remove("bg-[#E1B14F]", "text-black");
+        link.classList.add(
+          "text-gray-400",
+          "hover:bg-[#E1B14F]",
+          "hover:text-black",
+        );
+      }
+    });
+  }
 
-    // 4. Form Submission & Cal.com Integration
-    const contactForm = document.getElementById("consultancy-form");
-    if (contactForm) {
-        contactForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = new FormData(contactForm);
-            
-            // Envio Formspree
-            fetch("https://formspree.io/f/xaqpydjo", {
-                method: "POST",
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
+  window.addEventListener("scroll", onScroll);
+  onScroll(); // Initial check
 
-            // Transição UI
-            modalManager.step1.classList.add("hidden");
-            modalManager.step2.classList.remove("hidden");
+  // Modal logic
+  const modal = document.getElementById("consultancy-modal");
+  const btnHero = document.getElementById("btn-contato-hero");
+  const btnSidebar = document.getElementById("btn-contato-sidebar");
+  const btnMobile = document.getElementById("btn-contato-mobile");
+  const closeBtn = document.getElementById("close-modal");
+  const form = document.getElementById("consultancy-form");
+  const step1 = document.getElementById("modal-step-1");
+  const step2 = document.getElementById("modal-step-2");
 
-            // Init Cal.com
-            initCalCom();
-        });
-    }
+  const openModal = (e) => {
+    if (e) e.preventDefault();
+    modal.classList.add("active");
+    step1.classList.remove("hidden");
+    step2.classList.add("hidden");
+  };
 
-    function initCalCom() {
-        if (!window.Cal) {
-            (function (C, A, L) {
-                let p = function (a, ar) { a.q.push(ar); };
-                let d = C.document; C.Cal = C.Cal || function () {
-                    let cal = C.Cal; let ar = arguments;
-                    if (!cal.loaded) {
-                        cal.ns = {}; cal.q = cal.q || [];
-                        d.head.appendChild(d.createElement("script")).src = A;
-                        cal.loaded = true;
-                    }
-                    if (ar[0] === L) {
-                        const api = function () { p(api, arguments); };
-                        const namespace = ar[1]; api.q = api.q || [];
-                        if (typeof namespace === "string") {
-                            cal.ns[namespace] = cal.ns[namespace] || api;
-                            p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]);
-                        } else p(cal, ar); return;
-                    } p(cal, ar);
-                };
-            })(window, "https://app.cal.com/embed/embed.js", "init");
-        }
-        Cal("init", "consultoria", { origin: "https://app.cal.com" });
-        Cal("inline", {
-            elementOrSelector: "#my-cal-inline-consultoria-tecnica-especializada",
-            calLink: "lfa-engenharia",
-            config: { layout: "month_view", theme: "dark" }
-        });
-    }
+  const closeModal = () => {
+    modal.classList.remove("active");
+  };
 
-    // 5. Scroll Performance (Back to Top & Nav Active)
-    const backToTop = document.getElementById("back-to-top");
-    const sections = document.querySelectorAll("section");
-    const sideLinks = document.querySelectorAll(".nav-link");
+  if (btnHero) btnHero.addEventListener("click", openModal);
+  if (btnSidebar) btnSidebar.addEventListener("click", openModal);
+  if (btnMobile) btnMobile.addEventListener("click", openModal);
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
 
-    window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        
-        // Back to top visible logic
-        if (backToTop) {
-            const isVisible = scrollY > 500;
-            backToTop.classList.toggle("opacity-0", !isVisible);
-            backToTop.classList.toggle("invisible", !isVisible);
-            backToTop.style.transform = isVisible ? "translateY(0)" : "translateY(20px)";
-        }
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        // Scroll Spy
-        sections.forEach(sec => {
-            const offset = sec.offsetTop - 200;
-            const height = sec.offsetHeight;
-            const id = sec.getAttribute('id');
+      // Send form data to Formspree
+      const formData = new FormData(form);
+      try {
+        await fetch("https://formspree.io/f/xaqpydjo", {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
 
-            if (scrollY >= offset && scrollY < offset + height) {
-                sideLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${id}`) link.classList.add('active');
-                });
-            }
-        });
-    }, { passive: true });
+      // 1. Mostra a etapa e limpa o container para garantir
+      document.getElementById("modal-step-1").style.display = "none";
+      const container = document.getElementById("modal-step-2");
+      container.style.display = "block";
+
+      // 2. Injeta o motor do Cal.com e inicializa TUDO de uma vez
+      (function (C, A, L) {
+        let p = function (a, ar) {
+          a.q.push(ar);
+        };
+        let d = C.document;
+        C.Cal =
+          C.Cal ||
+          function () {
+            let cal = C.Cal;
+            let ar = arguments;
+            if (!cal.loaded) {
+              cal.ns = {};
+              cal.q = cal.q || [];
+              d.head.appendChild(d.createElement("script")).src = A;
+              cal.loaded = true;
+            }
+            if (ar[0] === L) {
+              const api = function () {
+                p(api, arguments);
+              };
+              const namespace = ar[1];
+              api.q = api.q || [];
+              if (typeof namespace === "string") {
+                cal.ns[namespace] = cal.ns[namespace] || api;
+                p(cal.ns[namespace], ar);
+                p(cal, ["initNamespace", namespace]);
+              } else p(cal, ar);
+              return;
+            }
+            p(cal, ar);
+          };
+      })(window, "https://app.cal.com/embed/embed.js", "init");
+
+      Cal("init", "consultoria", { origin: "https://app.cal.com" });
+      Cal("inline", {
+        elementOrSelector: "#my-cal-inline-consultoria-tecnica-especializada",
+        calLink: "lfa-engenharia",
+        config: {
+          layout: "month_view",
+          theme: "dark",
+          cssVarsPerTheme: {
+            dark: { "cal-brand": "#E1B14F" },
+          },
+        },
+      });
+    });
+  }
+
+  // Checklist form logic
+  const checklistForm = document.getElementById("form-checklist");
+  if (checklistForm) {
+    checklistForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(checklistForm);
+      try {
+        const response = await fetch(checklistForm.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          checklistForm.style.display = "none";
+          document
+            .getElementById("success-message-checklist")
+            .classList.remove("hidden");
+        } else {
+          alert("Erro ao enviar. Tente novamente.");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("Erro ao enviar. Tente novamente.");
+      }
+    });
+  }
+
+  // Swiper Initialization
+  const swiper = new Swiper(".solucoes-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      1024: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+      1280: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+      },
+    },
+  });
+
+  // Mobile Menu Overlay Logic
+  const mobileMenuTrigger = document.getElementById("mobile-menu-trigger");
+  const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+  const mobileMenuClose = document.getElementById("mobile-menu-close");
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+  if (mobileMenuTrigger && mobileMenuOverlay && mobileMenuClose) {
+    const closeMobileMenu = () => {
+      mobileMenuOverlay.classList.remove("active");
+      document.body.style.overflow = "";
+    };
+
+    mobileMenuTrigger.addEventListener("click", () => {
+      mobileMenuOverlay.classList.add("active");
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    });
+
+    mobileMenuClose.addEventListener("click", closeMobileMenu);
+
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", closeMobileMenu);
+    });
+  }
+
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
 });
