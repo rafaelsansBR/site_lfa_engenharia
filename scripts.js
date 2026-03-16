@@ -222,6 +222,30 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
+  // Mobile Menu Overlay Logic
+  const mobileMenuTrigger = document.getElementById("mobile-menu-trigger");
+  const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+  const mobileMenuClose = document.getElementById("mobile-menu-close");
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+  if (mobileMenuTrigger && mobileMenuOverlay && mobileMenuClose) {
+    const closeMobileMenu = () => {
+      mobileMenuOverlay.classList.remove("active");
+      document.body.style.overflow = "";
+    };
+
+    mobileMenuTrigger.addEventListener("click", () => {
+      mobileMenuOverlay.classList.add("active");
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    });
+
+    mobileMenuClose.addEventListener("click", closeMobileMenu);
+
+    mobileNavLinks.forEach((link) => {
+      link.addEventListener("click", closeMobileMenu);
+    });
+  }
+
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }

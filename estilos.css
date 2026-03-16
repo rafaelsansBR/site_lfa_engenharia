@@ -3129,46 +3129,46 @@ a[role="button"]:hover,
   }
 }
 
-/* Esconde a barra de scroll no menu mobile para um visual clean */
-nav.md\:hidden {
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
-  -webkit-overflow-scrolling: touch;
-}
-nav.md\:hidden::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
-
-/* Garante que os itens do menu mobile não encolham */
-nav.md\:hidden a {
-  flex: 0 0 auto;
-  min-width: 65px;
+/* Mobile Menu Overlay */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Scroll Horizontal e Área de Toque */
-.nav-mobile-scroll {
-  justify-content: flex-start !important;
-  scrollbar-width: none !important;
+#mobile-menu-overlay {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0);
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  height: 100dvh;
 }
-.nav-mobile-scroll::-webkit-scrollbar {
-  display: none !important;
+#mobile-menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.nav-mobile-scroll a {
-  flex: 0 0 auto !important;
-  min-width: 85px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 10px;
-  color: #9ca3af;
-  gap: 4px;
+#mobile-menu-overlay .corner-tl,
+#mobile-menu-overlay .corner-tr,
+#mobile-menu-overlay .corner-bl,
+#mobile-menu-overlay .corner-br {
+  z-index: 110;
+  border-color: #e1b14f;
+  border-width: 2px;
 }
 
 /* Botões Flutuantes acima do Menu no Mobile */
 .container-float-buttons {
   position: fixed !important;
   right: 1.5rem !important;
-  bottom: 100px !important;
+  bottom: 90px !important;
   z-index: 60 !important;
   display: flex !important;
   flex-direction: column !important;
