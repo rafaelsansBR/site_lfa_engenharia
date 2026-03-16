@@ -237,4 +237,28 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
+
+  // Ativação dos Modais Legais
+  const privModal = document.getElementById("modal-privacidade");
+  const termsModal = document.getElementById("modal-termos");
+
+  document.getElementById("btn-privacidade")?.addEventListener("click", () => {
+    privModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+
+  document.getElementById("btn-termos")?.addEventListener("click", () => {
+    termsModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  });
+
+  // Fechamento ao clicar no fundo escuro ou no X
+  document.querySelectorAll('.legal-modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+          if (e.target === modal || e.target.closest('.close-legal')) {
+              modal.classList.remove('active');
+              document.body.style.overflow = '';
+          }
+      });
+  });
 });

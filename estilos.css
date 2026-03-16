@@ -3212,3 +3212,45 @@ a[role="button"]:hover,
     display: block !important;
   }
 }
+
+/* Correção de Camada dos Modais Legais */
+.legal-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    background-color: rgba(0, 0, 0, 0.85) !important; /* Escurece o site ao fundo */
+    z-index: 9999 !important; /* Garante que fique acima de TUDO */
+}
+
+.legal-modal.active {
+    display: flex !important;
+}
+
+/* Garante que o conteúdo do modal tenha respiro e seja clicável */
+.legal-modal .modal-glass {
+    z-index: 10000 !important;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(225, 177, 79, 0.2);
+}
+.legal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.legal-item i {
+  margin-top: 2px;
+}
+.legal-item span {
+  flex: 1;
+}
+
+/* Scrollbar fina para o miolo do modal */
+.modal-glass::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-glass::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}

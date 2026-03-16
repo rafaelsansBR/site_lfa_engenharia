@@ -2455,7 +2455,7 @@
                   </div>
                   <div class="space-y-4 pt-2">
                     <a
-                      href="mailto:contato@lfaengenharia.com.br"
+                      href="mailto:contato@lfaengenharia.com"
                       class="flex items-center gap-4 text-gray-400 hover:text-[#E1B14F] transition-colors text-sm group cursor-pointer"
                     >
                       <span class="flex items-center justify-center">
@@ -2475,7 +2475,7 @@
                           <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                         </svg>
                       </span>
-                      contato@lfaengenharia.com.br
+                      contato@lfaengenharia.com
                     </a>
                     <a
                       href="tel:+5511950727235"
@@ -2602,14 +2602,16 @@
                 <!-- Linha 2: Links Legais -->
                 <div class="flex gap-4 text-xs">
                   <a
+                    id="btn-privacidade"
                     class="text-gray-400 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
-                    href="#"
+                    href="javascript:void(0)"
                     >Política de Privacidade</a
                   >
                   <span class="text-gray-400 opacity-60">•</span>
                   <a
+                    id="btn-termos"
                     class="text-gray-400 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
-                    href="#"
+                    href="javascript:void(0)"
                     >Termos de Uso</a
                   >
                 </div>
@@ -2810,5 +2812,136 @@
       });
     </script>
     <script src="scripts.js"></script>
+
+    <div id="modal-privacidade" class="legal-modal fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+      <div
+        class="modal-glass w-full max-w-2xl bg-[#05070a] border border-white/10 p-8 md:p-12 relative rounded-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+        <button
+          class="close-legal absolute top-6 right-6 text-white hover:text-[#E1B14F]"
+        >
+          <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+
+        <h2 class="font-montserrat text-2xl font-bold text-[#E1B14F] mb-8">
+          Política de Privacidade
+        </h2>
+        <div class="space-y-6 text-gray-300 text-sm leading-relaxed">
+          <p>
+            A LFA Engenharia valoriza a sua privacidade. Esta política descreve
+            como tratamos as informações coletadas através deste site:
+          </p>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Coleta de Dados:</strong> Nome, e-mail e WhatsApp são
+              coletados apenas sob sua solicitação para envio do Protocolo ou
+              Consultoria.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Finalidade:</strong> Dados usados exclusivamente para
+              envio de material técnico e comunicações profissionais.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Segurança:</strong> Armazenamento seguro. Não
+              compartilhamos, vendemos ou alugamos seus dados para
+              terceiros.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Seus Direitos:</strong> Solicite a exclusão dos dados a
+              qualquer momento via contato@lfaengenharia.com.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-termos" class="legal-modal fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+      <div
+        class="modal-glass w-full max-w-2xl bg-[#05070a] border border-white/10 p-8 md:p-12 relative rounded-2xl max-h-[90vh] overflow-y-auto"
+      >
+        <div class="corner-tl"></div>
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="corner-br"></div>
+        <button
+          class="close-legal absolute top-6 right-6 text-white hover:text-[#E1B14F]"
+        >
+          <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+
+        <h2 class="font-montserrat text-2xl font-bold text-[#E1B14F] mb-8">
+          Termos de Uso
+        </h2>
+        <div class="space-y-6 text-gray-300 text-sm leading-relaxed">
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Propriedade:</strong> Todo o conteúdo, incluindo o
+              Protocolo LFA, é propriedade exclusiva da LFA Engenharia.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Limitação:</strong> O material informativo não substitui
+              a perícia técnica ou acompanhamento de engenheiro no local.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Responsabilidade:</strong> A LFA não se responsabiliza
+              por decisões técnicas tomadas sem a contratação de consultoria
+              especializada.</span
+            >
+          </div>
+          <div class="legal-item">
+            <i
+              data-lucide="check-circle"
+              class="text-[#E1B14F] w-5 h-5 shrink-0"
+            ></i
+            ><span
+              ><strong>Foro:</strong> Fica eleito o foro da comarca de
+              Barueri/SP para questões relativas a estes termos.</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
