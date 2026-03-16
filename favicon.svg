@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
+  <!-- Generator: Adobe Illustrator 29.2.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 116)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#Gradiente_sem_nome_149);
+      }
+
+      .st1 {
+        fill: #fff;
+      }
+
+      .st2 {
+        mask: url(#mask);
+      }
+    </style>
+    <mask id="mask" x="6.4" y=".94" width="19.2" height="30.12" maskUnits="userSpaceOnUse">
+      <polygon class="st1" points="15.37 17.56 15.37 12.45 23.2 3.49 22.58 .94 13.22 11.65 13.22 20.01 8.54 25.36 8.54 4.69 6.4 2.22 6.4 31.06 13.22 23.27 13.22 28.5 15.37 25.49 15.37 20.82 22.07 13.17 19.99 24.38 17.07 21.72 17.06 24.62 21.39 28.56 25.6 5.88 15.37 17.56"/>
+    </mask>
+    <linearGradient id="Gradiente_sem_nome_149" data-name="Gradiente sem nome 149" x1="6.4" y1="16" x2="25.6" y2="16" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dd9b56"/>
+      <stop offset="1" stop-color="#e1b14f"/>
+    </linearGradient>
+  </defs>
+  <g class="st2">
+    <rect class="st0" x="6.4" y=".94" width="19.2" height="30.12"/>
+  </g>
+</svg>
