@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Scroll Spy
   const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll("aside nav a, nav.md\\:hidden a");
+  const navLinks = document.querySelectorAll(
+    "aside nav a, #mobile-menu-overlay nav a",
+  );
 
   function onScroll() {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
@@ -36,33 +38,19 @@ document.addEventListener("DOMContentLoaded", () => {
         link.getAttribute("data-section") ||
         (hrefAttr && hrefAttr.startsWith("#") ? hrefAttr.substring(1) : "");
       if (section === currentSectionId) {
-        // Desktop active classes
-        if (link.closest("aside")) {
-          link.classList.add("bg-[#E1B14F]", "text-black");
-          link.classList.remove(
-            "text-gray-400",
-            "hover:bg-[#E1B14F]",
-            "hover:text-black",
-          );
-        } else {
-          // Mobile active classes
-          link.classList.add("text-[#E1B14F]");
-          link.classList.remove("text-gray-400", "hover:text-[#E1B14F]");
-        }
+        link.classList.add("bg-[#E1B14F]", "text-black");
+        link.classList.remove(
+          "text-gray-400",
+          "hover:bg-[#E1B14F]",
+          "hover:text-black",
+        );
       } else {
-        // Desktop inactive classes
-        if (link.closest("aside")) {
-          link.classList.remove("bg-[#E1B14F]", "text-black");
-          link.classList.add(
-            "text-gray-400",
-            "hover:bg-[#E1B14F]",
-            "hover:text-black",
-          );
-        } else {
-          // Mobile inactive classes
-          link.classList.remove("text-[#E1B14F]");
-          link.classList.add("text-gray-400", "hover:text-[#E1B14F]");
-        }
+        link.classList.remove("bg-[#E1B14F]", "text-black");
+        link.classList.add(
+          "text-gray-400",
+          "hover:bg-[#E1B14F]",
+          "hover:text-black",
+        );
       }
     });
   }
