@@ -1,70 +1,38 @@
-/* Configurações Globais e Variáveis */
+/* [MANTENHA TODO O SEU CONTEÚDO ORIGINAL AQUI - O DUMP DO TAILWIND] */
+
+/* --- INJEÇÃO DE PERFORMANCE E REPARO (ADICIONAR AO FINAL DO ARQUIVO) --- */
+
 :root {
     --gold: #E1B14F;
     --dark: #05070a;
-    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@font-face { font-family: 'Montserrat'; font-display: swap; src: local('Arial'); }
-@font-face { font-family: 'Inter'; font-display: swap; src: local('Arial'); }
+/* Fix Fonts Performance */
+@font-face { font-family: 'Montserrat'; font-display: swap; }
+@font-face { font-family: 'Inter'; font-display: swap; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--dark); font-family: 'Inter', sans-serif; color: white; line-height: 1.5; overflow-x: hidden; }
-
-/* Tipografia */
-.font-montserrat { font-family: 'Montserrat', sans-serif; }
+/* Custom Components */
 .text-gradient { background: linear-gradient(to right, var(--gold), #dd9b56); -webkit-background-clip: text; background-clip: text; color: transparent; }
-
-/* Hero Wrapper */
-.hero-text-wrapper { padding-left: 24px; transition: var(--transition); }
-@media (min-width: 768px) { .hero-text-wrapper { padding-left: 80px; } }
+.hero-text-wrapper { transition: padding 0.3s ease; }
 @media (min-width: 1280px) { .hero-text-wrapper { padding-left: 140px; } }
 
-/* Fundos Dinâmicos - NOVO DOMÍNIO */
-#tecnologia { background-image: url('https://www.lfaengenharia.com/imgs/tecnologia-revit-ptw-engenharia.webp'); background-attachment: fixed; background-position: center; background-size: cover; }
-footer#contato { background-image: url('https://www.lfaengenharia.com/imgs/infraestrutura-eletrica-nacional-lfa.webp'); background-position: center; background-size: cover; }
-
-/* Botões e Componentes */
-.btn-primary { background: var(--gold); color: black; font-weight: 700; padding: 16px 32px; border-radius: 99px; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: var(--transition); border: none; }
-.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(225,177,79,0.3); }
-
-.nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-radius: 99px; color: #d1d5db; transition: var(--transition); text-decoration: none; font-size: 14px; }
-.nav-link.active, .nav-link:hover { background: var(--gold); color: black !important; }
-.nav-link svg { width: 20px; height: 20px; }
-
-/* Cantoneiras Estilo Tático */
-.corner-tl, .corner-tr, .corner-bl, .corner-br { position: absolute; width: 30px; height: 30px; border: 2px solid var(--gold); z-index: 10; pointer-events: none; }
-.corner-tl { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
-.corner-tr { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
-.corner-bl { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
-.corner-br { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
-
-/* Cases Mobile (Stacked) vs Desktop (Shutter) */
-.case-card { position: relative; border-radius: 24px; overflow: hidden; background: #0b0d11; border: 1px solid rgba(255,255,255,0.05); }
-@media (max-width: 1023px) {
-    .case-card { display: flex; flex-direction: column; }
-    .case-img-wrapper { height: 220px; }
-    .case-content { padding: 24px; }
+/* Sidebar Active State */
+.nav-link { 
+    display: flex; align-items: center; padding: 12px 20px; border-radius: 99px; 
+    color: #d1d5db !important; transition: all 0.3s ease; text-decoration: none; 
 }
-@media (min-width: 1024px) {
-    .case-card { height: 160px; transition: height 0.6s ease; cursor: zoom-in; }
-    .case-card:hover { height: 480px; }
-    .case-img-wrapper { position: absolute; inset: 0; }
-    .case-content { position: absolute; inset: 0; padding: 40px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
-}
-.case-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.case-tag { color: var(--gold); font-size: 10px; font-bold; text-transform: uppercase; letter-spacing: 1px; }
+.nav-link:hover, .nav-link.active { background: var(--gold); color: black !important; }
+.nav-link svg { width: 20px; height: 20px; margin-right: 12px; }
 
-/* Menu Mobile Overlay */
-#mobile-menu-overlay { height: 100dvh; width: 100vw; transition: var(--transition); }
+/* Mobile Menu Overlay Fix */
+#mobile-menu-overlay { height: 100dvh; width: 100vw; transition: all 0.4s ease; display: none; }
 #mobile-menu-overlay.flex { display: flex !important; }
-.mobile-nav-link { color: #d1d5db; text-decoration: none; padding: 15px; width: 100%; text-align: center; transition: color 0.3s; }
+.mobile-nav-link { color: #d1d5db; padding: 20px; width: 100%; text-align: center; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
 .mobile-nav-link:hover { color: var(--gold); }
 
-/* Floating Buttons */
+/* Floating Buttons Positioning */
 .container-float-buttons { position: fixed; right: 24px; bottom: 100px; z-index: 60; display: flex; flex-direction: column; gap: 12px; }
 @media (min-width: 768px) { .container-float-buttons { bottom: 30px; } }
-.btn-float { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.4); border: none; cursor: pointer; transition: var(--transition); }
-.btn-float.whatsapp { background: #25D366; color: white; }
-.btn-float.top { background: var(--gold); color: black; }
-.btn-float:hover { transform: scale(1.1); }
+
+/* Fix CLS and Contrasts */
+.case-tag { color: var(--gold) !important; font-weight: 700; font-size: 11px; }

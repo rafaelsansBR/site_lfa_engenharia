@@ -1,12 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Ícones Lucide (Carregamento Inteligente)
-    const loadIcons = () => {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-        else setTimeout(loadIcons, 100);
-    };
-    loadIcons();
+    // 1. INICIALIZAÇÃO DE ÍCONES (LUCIDE)
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
-    // 2. Menu Mobile Overlay (Auto-close e Lock Scroll)
+    // 2. GERENCIADOR DO MENU MOBILE OVERLAY
     const menu = {
         overlay: document.getElementById("mobile-menu-overlay"),
         trigger: document.getElementById("mobile-menu-trigger"),
@@ -22,28 +18,114 @@ document.addEventListener("DOMContentLoaded", () => {
 
     menu.trigger?.addEventListener("click", () => menu.toggle(true));
     menu.close?.addEventListener("click", () => menu.toggle(false));
-    menu.links.forEach(l => l.addEventListener("click", () => menu.toggle(false)));
+    menu.links.forEach(link => link.addEventListener("click", () => menu.toggle(false)));
 
-    // 3. Scroll Spy (Navegação Ativa) & Back to Top
-    const navLinks = document.querySelectorAll(".nav-link");
+    // 3. GERENCIADOR DO MODAL E ETAPAS
+    const modalManager = {
+        el: document.getElementById("consultancy-modal"),
+        step1: document.getElementById("modal-step-1"),
+        step2: document.getElementById("modal-step-2"),
+        open() {
+            if (!this.el) return;
+            this.el.classList.add("active");
+            this.step1.classList.remove("hidden");
+            this.step2.classList.add("hidden");
+            document.body.style.overflow = "hidden";
+        },
+        close() {
+            this.el.classList.remove("active");
+            document.body.style.overflow = "";
+        }
+    };
+
+    // Gatilhos de abertura (Desktop e Mobile)
+    document.querySelectorAll('[data-section="contato"], #btn-contato-hero, #btn-contato-sidebar').forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            modalManager.open();
+        });
+    });
+
+    // Gatilho de fechamento
+    document.getElementById("close-modal")?.addEventListener("click", () => modalManager.close());
+
+    // 4. LÓGICA DO FORMULÁRIO E INTEGRAÇÃO CAL.COM
+    const contactForm = document.getElementById("consultancy-form");
+    if (contactForm) {
+        contactForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(contactForm);
+            
+            // Envio para Formspree em segundo plano
+            try {
+                fetch("https://formspree.io/f/xaqpydjo", {
+                    method: "POST",
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+            } catch (err) { console.error("Erro Formspree:", err); }
+
+            // Transição visual de etapas
+            modalManager.step1.classList.add("hidden");
+            modalManager.step2.classList.remove("hidden");
+
+            // Inicializa o Calendário apenas agora (Economiza performance/JS não usado)
+            initCalCom();
+        });
+    }
+
+    function initCalCom() {
+        if (!window.Cal) {
+            (function (C, A, L) {
+                let p = function (a, ar) { a.q.push(ar); };
+                let d = C.document; C.Cal = C.Cal || function () {
+                    let cal = C.Cal; let ar = arguments;
+                    if (!cal.loaded) {
+                        cal.ns = {}; cal.q = cal.q || [];
+                        d.head.appendChild(d.createElement("script")).src = A;
+                        cal.loaded = true;
+                    }
+                    if (ar[0] === L) {
+                        const api = function () { p(api, arguments); };
+                        const namespace = ar[1]; api.q = api.q || [];
+                        if (typeof namespace === "string") {
+                            cal.ns[namespace] = cal.ns[namespace] || api;
+                            p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]);
+                        } else p(cal, ar); return;
+                    } p(cal, ar);
+                };
+            })(window, "https://app.cal.com/embed/embed.js", "init");
+        }
+        
+        Cal("init", "consultoria", { origin: "https://app.cal.com" });
+        Cal("inline", {
+            elementOrSelector: "#my-cal-inline-consultoria-tecnica-especializada",
+            calLink: "lfa-engenharia",
+            config: { 
+                layout: "month_view", 
+                theme: "dark",
+                cssVarsPerTheme: { dark: { "cal-brand": "#E1B14F" } }
+            }
+        });
+    }
+
+    // 5. PERFORMANCE DE SCROLL (BACK TO TOP & SCROLL SPY)
+    const backToTop = document.getElementById("back-to-top");
     const sections = document.querySelectorAll("section");
-    const topBtn = document.getElementById("back-to-top");
+    const navLinks = document.querySelectorAll(".nav-link");
 
-    const handleScroll = () => {
+    window.addEventListener("scroll", () => {
         const y = window.scrollY;
         
-        // Botão Topo
-        if (topBtn) {
-            if (y > 500) {
-                topBtn.classList.remove("invisible", "opacity-0");
-                topBtn.style.transform = "translateY(0)";
-            } else {
-                topBtn.classList.add("invisible", "opacity-0");
-                topBtn.style.transform = "translateY(20px)";
-            }
+        // Botão Voltar ao Topo
+        if (backToTop) {
+            const isVisible = y > 500;
+            backToTop.classList.toggle("invisible", !isVisible);
+            backToTop.classList.toggle("opacity-0", !isVisible);
+            backToTop.style.transform = isVisible ? "translateY(0)" : "translateY(20px)";
         }
 
-        // Active Link Spy
+        // Scroll Spy (Marca link ativo no menu)
         sections.forEach(sec => {
             const top = sec.offsetTop - 150;
             const bottom = top + sec.offsetHeight;
@@ -53,21 +135,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             }
         });
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    // 4. Modal Manager (Apenas carrega o Cal.com quando necessário)
-    const openModal = () => {
-        const modal = document.getElementById("consultancy-modal");
-        if (modal) modal.classList.add("active");
-        // Se houver necessidade de injetar o Cal.com aqui, a lógica anterior pode ser mantida
-    };
-
-    document.querySelectorAll('[data-section="contato"], #btn-contato-hero').forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            openModal();
-        });
-    });
+    }, { passive: true });
 });
