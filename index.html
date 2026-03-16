@@ -9,13 +9,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="LFA Engenharia | Engenharia de Potência">
     <meta property="og:description" content="Diagnósticos preditivos e projetos BIM assinados por especialista Mackenzie/PUC.">
-    <meta property="og:image" content="https://www.lfaengenharia.com/imgs/lfa-engenharia-og.jpg">
+    <meta property="og:image" content="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/lfa-engenharia-og.jpg">
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
-    <link rel="stylesheet" href="estilos.css?160320261551" />
+    <link rel="stylesheet" href="estilos.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <script type="application/ld+json">
@@ -23,7 +23,7 @@
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "LFA Engenharia",
-      "image": "https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png",
+      "image": "https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/logo-lfa-engenharia-horizontal-white.png",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Alameda Rio Negro, 503",
@@ -43,7 +43,7 @@
         <div class="flex flex-col items-center w-full px-6">
             <header class="w-full mb-12">
                 <a href="#hero" aria-label="Voltar ao início">
-                    <img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA Engenharia" class="w-48 h-auto" />
+                    <img src="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA Engenharia" class="w-48 h-auto" />
                 </a>
             </header>
             <nav class="w-full">
@@ -67,7 +67,6 @@
     <div id="mobile-menu-overlay" class="fixed inset-0 z-[100] bg-[#05070a]/95 backdrop-blur-xl flex-col items-center justify-center hidden">
         <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
         <button id="mobile-menu-close" class="absolute top-6 right-6 text-white p-2"><i data-lucide="x"></i></button>
-        <div class="mb-8"><img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA" class="w-48"></div>
         <nav class="flex flex-col gap-6 items-center">
             <a href="#hero" class="mobile-nav-link">Home</a>
             <a href="#solucoes" class="mobile-nav-link">Soluções</a>
@@ -82,29 +81,39 @@
     <main class="md:pl-[230px]">
         <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="https://www.lfaengenharia.com/imgs/lfa-engenharia-seguranca-eletrica-hero.webp" alt="Engenharia Elétrica" class="object-cover w-full h-full opacity-60 md:opacity-100" fetchpriority="high" />
+                <img src="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/lfa-engenharia-seguranca-eletrica-hero.webp" alt="Engenharia Elétrica de Alta Performance" class="object-cover w-full h-full opacity-60 md:opacity-100" fetchpriority="high" />
                 <div class="absolute inset-0 bg-gradient-to-r from-[#05070a] via-[#05070a]/80 to-transparent md:w-2/3"></div>
             </div>
+            
             <div class="relative z-20 hero-text-wrapper px-6">
-                <div class="badge-premium mb-6"><span class="dot-pulse"></span> ALTA PERFORMANCE ELÉTRICA</div>
-                <h1 class="text-5xl md:text-7xl font-bold font-montserrat leading-tight mb-6">Engenharia de Potência para quem <span class="text-gradient">não pode parar</span></h1>
-                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-xl">Projetos BIM e diagnósticos preditivos com o rigor Mackenzie e PUC.</p>
+                <div class="badge-premium mb-6">
+                    <span class="dot-pulse"></span> ALTA PERFORMANCE ELÉTRICA
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold font-montserrat leading-tight mb-6">
+                    Engenharia de Potência para quem <span class="text-gradient">não pode parar</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-xl">
+                    Projetos BIM e diagnósticos preditivos com o rigor Mackenzie e PUC.
+                </p>
                 <div class="flex flex-wrap gap-4">
                     <button id="btn-contato-hero" class="btn-primary">Falar com Especialista <i data-lucide="arrow-right"></i></button>
                     <a href="#solucoes" class="btn-outline">Conhecer Soluções</a>
                 </div>
             </div>
+
             <footer class="mt-auto w-full py-8 bg-black/40 backdrop-blur-sm border-t border-white/5 relative z-20">
                 <div class="flex flex-wrap justify-center gap-8 md:gap-12 opacity-80 px-6">
                     <div class="seal"><i data-lucide="shield-check"></i> CREA-SP</div>
                     <div class="seal"><i data-lucide="award"></i> MACKENZIE</div>
-                    <div class="seal"><i data-lucide="award"></i> PUC</div>
+                    <div class="seal"><i data-lucide="graduation-cap"></i> PÓS-GRADUAÇÃO PUC</div>
                     <div class="seal"><i data-lucide="zap"></i> FLUKE</div>
                 </div>
             </footer>
         </section>
 
-        </main>
+        <footer id="contato" class="bg-[#2A2A2A] relative py-24 border-t border-white/5">
+             </footer>
+    </main>
 
     <div class="container-float-buttons">
         <button id="back-to-top" class="btn-float top" aria-label="Voltar ao topo"><i data-lucide="arrow-up"></i></button>
