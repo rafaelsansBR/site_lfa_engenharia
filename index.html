@@ -11,12 +11,14 @@
     <meta property="og:description" content="Diagnósticos preditivos e projetos BIM assinados por especialista Mackenzie/PUC.">
     <meta property="og:image" content="https://www.lfaengenharia.com/imgs/lfa-engenharia-og.jpg">
 
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
     <link rel="stylesheet" href="estilos.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
 
     <script type="application/ld+json">
     {
@@ -36,14 +38,14 @@
     </script>
 </head>
 
-<body class="bg-[#05070a] text-white antialiased font-sans selection:bg-[#E1B14F] selection:text-black">
+<body class="bg-[#05070a] text-white antialiased font-sans">
     <div class="fixed inset-0 z-[-1] opacity-20 pointer-events-none bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
     <aside class="fixed top-0 left-0 h-screen w-[230px] bg-[#343434] z-50 hidden md:flex flex-col justify-center border-r border-white/5">
         <div class="flex flex-col items-center w-full px-6">
-            <header class="w-full mb-12">
-                <a href="#hero" aria-label="Voltar ao início">
-                    <img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA Engenharia" class="w-48 h-auto" />
+            <header class="w-full mb-12 flex justify-center">
+                <a href="#hero" aria-label="Home LFA Engenharia">
+                    <img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="Logo LFA Engenharia" width="192" height="48" class="w-48 h-auto" />
                 </a>
             </header>
             <nav class="w-full">
@@ -52,37 +54,37 @@
                     <li><a class="nav-link" href="#solucoes"><i data-lucide="zap"></i><span>Soluções</span></a></li>
                     <li><a class="nav-link" href="#metodologia"><i data-lucide="cpu"></i><span>Metodologia</span></a></li>
                     <li><a class="nav-link" href="#cases"><i data-lucide="briefcase"></i><span>Cases</span></a></li>
-                    <li><a class="nav-link" href="#sobre"><i data-lucide="user"></i><span>O Especialista</span></a></li>
+                    <li><a class="nav-link" href="#sobre"><i data-lucide="user"></i><span>Especialista</span></a></li>
                     <li><a class="nav-link" href="#blog"><i data-lucide="book-open"></i><span>Insights</span></a></li>
-                    <li><a id="btn-contato-sidebar" class="nav-link" href="javascript:void(0)" data-section="contato"><i data-lucide="mail"></i><span>Contato</span></a></li>
+                    <li><a id="btn-contato-sidebar" class="nav-link" href="#contato" data-section="contato"><i data-lucide="mail"></i><span>Contato</span></a></li>
                 </ul>
             </nav>
         </div>
     </aside>
 
-    <button id="mobile-menu-trigger" class="md:hidden fixed bottom-0 left-0 right-0 bg-[#343434] z-50 py-4 text-white font-bold tracking-widest flex justify-center gap-2 border-t border-white/10">
+    <button id="mobile-menu-trigger" aria-label="Abrir menu" class="md:hidden fixed bottom-0 left-0 right-0 bg-[#343434] z-50 py-4 text-white font-bold border-t border-white/10 flex justify-center gap-2">
         <i data-lucide="menu" class="text-[#E1B14F]"></i> MENU
     </button>
 
-    <div id="mobile-menu-overlay" class="fixed inset-0 z-[100] bg-[#05070a]/95 backdrop-blur-xl flex-col items-center justify-center hidden">
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-[100] bg-[#05070a]/98 backdrop-blur-xl hidden flex-col items-center justify-center">
         <div class="corner-tl"></div><div class="corner-tr"></div><div class="corner-bl"></div><div class="corner-br"></div>
-        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white p-2"><i data-lucide="x"></i></button>
-        <div class="mb-8"><img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA" class="w-48"></div>
+        <button id="mobile-menu-close" aria-label="Fechar menu" class="absolute top-6 right-6 text-white p-4"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA" width="150" height="38" class="mb-12">
         <nav class="flex flex-col gap-6 items-center">
-            <a href="#hero" class="mobile-nav-link">Home</a>
-            <a href="#solucoes" class="mobile-nav-link">Soluções</a>
-            <a href="#metodologia" class="mobile-nav-link">Metodologia</a>
-            <a href="#cases" class="mobile-nav-link">Cases</a>
-            <a href="#sobre" class="mobile-nav-link">O Especialista</a>
-            <a href="#blog" class="mobile-nav-link">Insights</a>
-            <a href="javascript:void(0)" class="mobile-nav-link" data-section="contato">Contato</a>
+            <a href="#hero" class="mobile-nav-link">HOME</a>
+            <a href="#solucoes" class="mobile-nav-link">SOLUÇÕES</a>
+            <a href="#metodologia" class="mobile-nav-link">METODOLOGIA</a>
+            <a href="#cases" class="mobile-nav-link">CASES</a>
+            <a href="#sobre" class="mobile-nav-link">O ESPECIALISTA</a>
+            <a href="#blog" class="mobile-nav-link">INSIGHTS</a>
+            <a href="#contato" class="mobile-nav-link" data-section="contato">CONTATO</a>
         </nav>
     </div>
 
     <main class="md:pl-[230px]">
         <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden">
             <div class="absolute inset-0 z-0">
-                <img src="https://www.lfaengenharia.com/imgs/lfa-engenharia-seguranca-eletrica-hero.webp" alt="Engenharia Elétrica" class="object-cover w-full h-full opacity-60 md:opacity-100" fetchpriority="high" />
+                <img src="https://www.lfaengenharia.com/imgs/lfa-engenharia-seguranca-eletrica-hero.webp" alt="Engenharia Elétrica de Alta Performance" width="1920" height="1080" class="object-cover w-full h-full opacity-60 md:opacity-100" fetchpriority="high" decoding="async" />
                 <div class="absolute inset-0 bg-gradient-to-r from-[#05070a] via-[#05070a]/80 to-transparent md:w-2/3"></div>
             </div>
             <div class="relative z-20 hero-text-wrapper px-6">
@@ -104,15 +106,76 @@
             </footer>
         </section>
 
-        </main>
+        <section id="solucoes" class="py-24 bg-white relative text-black overflow-hidden">
+            <div class="w-full px-6 md:px-20 relative z-10">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl font-bold mb-4 font-montserrat">Soluções em <span class="text-[#E1B14F]">Engenharia Elétrica</span></h2>
+                    <p class="text-gray-600 text-lg">Atuação estratégica para mitigar riscos e otimizar recursos.</p>
+                </div>
+                </div>
+        </section>
+
+        <section id="tecnologia" class="relative py-32 flex items-center justify-center">
+            <div class="w-full px-6 relative z-10 flex justify-center">
+                <div class="modal-glass p-12 max-w-3xl text-center relative border border-white/10 rounded-3xl overflow-hidden bg-black/40 backdrop-blur-xl">
+                    <div class="corner-tl"></div><div class="corner-tr"></div>
+                    <h2 class="text-4xl font-bold mb-6 text-white font-montserrat">Engenharia Baseada <span class="text-[#E1B14F]">em Dados</span></h2>
+                    <p class="text-gray-300 text-lg mb-8">Utilizamos os softwares líderes globais (Revit, PTW) para garantir decisões técnicas precisas.</p>
+                    <a href="#metodologia" class="btn-primary">Conhecer Metodologia</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="cases" class="py-24 bg-[#05070a] relative">
+            <div class="w-full px-6 md:px-20 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-white font-montserrat">Engenharia em <span class="text-gradient">Campo</span></h2>
+                </div>
+                <div class="flex flex-col gap-8">
+                    <article class="case-card group">
+                        <div class="case-img-wrapper">
+                            <img src="https://www.lfaengenharia.com/imgs/lfa-kopenhagen-osasco-diagnostico-eletrico.webp" alt="Kopenhagen Osasco" width="800" height="450" loading="lazy">
+                        </div>
+                        <div class="case-content">
+                            <span class="case-tag">Projeto Executivo</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">Segurança e Diagnóstico (Kopenhagen Osasco)</h3>
+                            <p class="text-gray-400 mt-4">Gestão elétrica completa e vistorias técnicas de pré-inauguração.</p>
+                        </div>
+                    </article>
+                    <article class="case-card group">
+                        <div class="case-img-wrapper">
+                            <img src="https://www.lfaengenharia.com/imgs/lfa-tambore-mobilidade-eletrica-gwm-haval.webp" alt="GWM Tamboré" width="800" height="450" loading="lazy">
+                        </div>
+                        <div class="case-content">
+                            <span class="case-tag">Eletromobilidade</span>
+                            <h3 class="text-2xl font-bold text-white mt-2">Mobilidade Elétrica (Tamboré)</h3>
+                            <p class="text-gray-400 mt-4">Implementação de recarga veicular GWM com cálculo de demanda.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contato" class="bg-[#2A2A2A] relative py-24 border-t border-white/5 overflow-hidden">
+            <div class="w-full px-6 md:px-20 flex flex-col items-center text-center">
+                <img src="https://www.lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="LFA" width="150" height="38" class="mb-8">
+                <p class="text-gray-400 max-w-md mb-8">Engenharia de potência para quem não pode parar. Atuação em todo o Brasil.</p>
+                <div class="flex gap-6 mb-12">
+                    <a href="https://www.linkedin.com/company/lfa-engenharia/" target="_blank" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+                    <a href="https://www.instagram.com/lfaengenharia_/" target="_blank" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                </div>
+                <p class="text-xs text-gray-500">© 2026 LFA Engenharia | Desenvolvido por RafaelSans</p>
+            </div>
+        </footer>
+    </main>
 
     <div class="container-float-buttons">
-        <button id="back-to-top" class="btn-float top" aria-label="Voltar ao topo"><i data-lucide="arrow-up"></i></button>
+        <button id="back-to-top" class="btn-float top invisible opacity-0" aria-label="Voltar ao topo"><i data-lucide="arrow-up"></i></button>
         <a href="https://wa.me/5511950727235?text=Ol%C3%A1%2C%20Lucas!%20Vim%20pelo%20site%20da%20LFA..." target="_blank" class="btn-float whatsapp" aria-label="Falar no WhatsApp"><i data-lucide="message-circle"></i></a>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <script src="scripts.js" defer></script>
 </body>
 </html>

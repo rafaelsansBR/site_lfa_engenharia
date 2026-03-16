@@ -1,48 +1,73 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Iniciar Ícones
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    // 1. Ícones Lucide (Carregamento Inteligente)
+    const loadIcons = () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        else setTimeout(loadIcons, 100);
+    };
+    loadIcons();
 
-    // 2. Navegação Mobile Overlay
+    // 2. Menu Mobile Overlay (Auto-close e Lock Scroll)
     const menu = {
         overlay: document.getElementById("mobile-menu-overlay"),
         trigger: document.getElementById("mobile-menu-trigger"),
         close: document.getElementById("mobile-menu-close"),
         links: document.querySelectorAll(".mobile-nav-link"),
-        toggle(s) {
-            this.overlay.style.display = s ? "flex" : "none";
-            document.body.style.overflow = s ? "hidden" : "";
+        toggle(state) {
+            if (!this.overlay) return;
+            this.overlay.classList.toggle("hidden", !state);
+            this.overlay.classList.toggle("flex", state);
+            document.body.style.overflow = state ? "hidden" : "";
         }
     };
+
     menu.trigger?.addEventListener("click", () => menu.toggle(true));
     menu.close?.addEventListener("click", () => menu.toggle(false));
     menu.links.forEach(l => l.addEventListener("click", () => menu.toggle(false)));
 
-    // 3. Modal de Consultoria
-    const modal = {
-        el: document.getElementById("consultancy-modal"),
-        steps: [document.getElementById("modal-step-1"), document.getElementById("modal-step-2")],
-        open() { this.el.classList.add("active"); this.steps[0].classList.remove("hidden"); },
-        close() { this.el.classList.remove("active"); }
-    };
-    document.querySelectorAll('[data-section="contato"], #btn-contato-hero').forEach(b => b.addEventListener("click", () => modal.open()));
-    document.getElementById("close-modal")?.addEventListener("click", () => modal.close());
-
-    // 4. Scroll Spy & Back to Top
+    // 3. Scroll Spy (Navegação Ativa) & Back to Top
     const navLinks = document.querySelectorAll(".nav-link");
     const sections = document.querySelectorAll("section");
     const topBtn = document.getElementById("back-to-top");
 
-    window.addEventListener("scroll", () => {
+    const handleScroll = () => {
         const y = window.scrollY;
-        if(topBtn) topBtn.style.opacity = y > 500 ? "1" : "0";
+        
+        // Botão Topo
+        if (topBtn) {
+            if (y > 500) {
+                topBtn.classList.remove("invisible", "opacity-0");
+                topBtn.style.transform = "translateY(0)";
+            } else {
+                topBtn.classList.add("invisible", "opacity-0");
+                topBtn.style.transform = "translateY(20px)";
+            }
+        }
 
-        sections.forEach(s => {
-            const top = s.offsetTop - 150;
-            if (y >= top && y < top + s.offsetHeight) {
-                navLinks.forEach(l => {
-                    l.classList.toggle("active", l.getAttribute("href") === `#${s.id}`);
+        // Active Link Spy
+        sections.forEach(sec => {
+            const top = sec.offsetTop - 150;
+            const bottom = top + sec.offsetHeight;
+            if (y >= top && y < bottom) {
+                navLinks.forEach(link => {
+                    link.classList.toggle("active", link.getAttribute("href") === `#${sec.id}`);
                 });
             }
         });
-    }, { passive: true });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // 4. Modal Manager (Apenas carrega o Cal.com quando necessário)
+    const openModal = () => {
+        const modal = document.getElementById("consultancy-modal");
+        if (modal) modal.classList.add("active");
+        // Se houver necessidade de injetar o Cal.com aqui, a lógica anterior pode ser mantida
+    };
+
+    document.querySelectorAll('[data-section="contato"], #btn-contato-hero').forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            openModal();
+        });
+    });
 });
