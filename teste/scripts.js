@@ -20,14 +20,24 @@ document.addEventListener("DOMContentLoaded", () => {
     "aside nav a, #mobile-menu-overlay nav a",
   );
 
+  let sectionPositions = [];
+  function calculatePositions() {
+    sectionPositions = Array.from(sections).map((section) => ({
+      id: section.getAttribute("id"),
+      offsetTop: section.offsetTop,
+    }));
+  }
+  calculatePositions();
+  window.addEventListener("resize", calculatePositions, { passive: true });
+
   function onScroll() {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
     let currentSectionId = "hero";
 
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const section = sections[i];
+    for (let i = sectionPositions.length - 1; i >= 0; i--) {
+      const section = sectionPositions[i];
       if (section.offsetTop <= scrollPosition) {
-        currentSectionId = section.getAttribute("id");
+        currentSectionId = section.id;
         break;
       }
     }
@@ -55,7 +65,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
+  let isScrolling = false;
+  window.addEventListener("scroll", () => {
+    if (!isScrolling) {
+      window.requestAnimationFrame(() => {
+        onScroll();
+        isScrolling = false;
+      });
+      isScrolling = true;
+    }
+  }, { passive: true });
   onScroll(); // Initial check
 
   // Modal logic
@@ -242,12 +261,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const privModal = document.getElementById("modal-privacidade");
   const termsModal = document.getElementById("modal-termos");
 
-  document.getElementById("btn-privacidade")?.addEventListener("click", () => {
+  document.getElementById("btn-privacidade")?.addEventListener("click", (e) => {
+    e.preventDefault();
     privModal.classList.add("active");
     document.body.style.overflow = "hidden";
   });
 
-  document.getElementById("btn-termos")?.addEventListener("click", () => {
+  document.getElementById("btn-termos")?.addEventListener("click", (e) => {
+    e.preventDefault();
     termsModal.classList.add("active");
     document.body.style.overflow = "hidden";
   });

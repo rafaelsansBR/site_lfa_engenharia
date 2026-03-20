@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Engenharia de potência, projetos BIM e diagnósticos elétricos de alta performance com o rigor Mackenzie e PUC." />
     <link rel="preload" as="image" href="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/lfa-engenharia-seguranca-eletrica-hero.webp" fetchpriority="high" />
     <link rel="stylesheet" href="estilos.css" />
     <link
@@ -236,7 +237,7 @@
                 <a
                   id="btn-contato-sidebar"
                   class="flex items-center w-full px-4 py-3 rounded-full transition-all duration-200 group text-gray-400 hover:bg-[#E1B14F] hover:text-black"
-                  href="javascript:void(0)"
+                  href="#contato"
                   data-section="contato"
                 >
                   <div class="shrink-0 flex items-center justify-center">
@@ -306,6 +307,8 @@
           <img
             src="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/logo-lfa-engenharia-horizontal-white.png"
             alt="LFA Engenharia"
+            loading="lazy"
+            decoding="async"
             class="w-48 h-auto"
             width="192"
             height="48"
@@ -350,7 +353,7 @@
             <i data-lucide="book-open" class="w-6 h-6"></i> Insights
           </a>
           <a
-            href="javascript:void(0)"
+            href="#contato"
             id="btn-contato-mobile"
             class="mobile-nav-link flex items-center justify-center w-full px-6 py-4 rounded-full gap-4 text-xl font-['Montserrat'] text-gray-400 hover:bg-[#E1B14F] hover:text-black transition-all duration-200"
             data-section="contato"
@@ -381,7 +384,7 @@
             ></div>
             <img
               alt="Segurança Elétrica"
-              decoding="async"
+              fetchpriority="high"
               data-nimg="fill"
               class="object-cover object-right opacity-60 md:opacity-100"
               style="
@@ -397,7 +400,7 @@
               src="https://rafaelsansbr.github.io/site_lfa_engenharia/imgs/lfa-engenharia-seguranca-eletrica-hero.webp"
               width="1920"
               height="1080"
-              fetchpriority="high"
+              loading="eager"
             />
           </div>
           <div
@@ -1630,6 +1633,7 @@
                           target="_blank"
                           rel="noopener noreferrer"
                           class="w-10 h-10 rounded-full bg-[#2A2A2A] flex items-center justify-center text-gray-400 hover:bg-[#E1B14F] hover:text-[#1A1A1A] transition-all duration-300"
+                          aria-label="LinkedIn Lucas Feitosa"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -1656,6 +1660,7 @@
                           target="_blank"
                           rel="noopener noreferrer"
                           class="w-10 h-10 rounded-full bg-[#2A2A2A] flex items-center justify-center text-gray-400 hover:bg-[#E1B14F] hover:text-[#1A1A1A] transition-all duration-300"
+                          aria-label="Instagram LFA Engenharia"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -2074,7 +2079,7 @@
                       <span class="text-xs text-gray-500 font-medium"
                         >12 Out 2023</span
                       ><a
-                        href="#"
+                        href="#blog"
                         class="flex items-center gap-2 text-[#E1B14F] font-semibold text-sm hover:text-[#1A1A1A] transition-colors group/link cursor-pointer"
                         >Ler Artigo<svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -2175,7 +2180,7 @@
                       <span class="text-xs text-gray-500 font-medium"
                         >28 Set 2023</span
                       ><a
-                        href="#"
+                        href="#blog"
                         class="flex items-center gap-2 text-[#E1B14F] font-semibold text-sm hover:text-[#1A1A1A] transition-colors group/link cursor-pointer"
                         >Ler Artigo<svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -2276,7 +2281,7 @@
                       <span class="text-xs text-gray-500 font-medium"
                         >15 Set 2023</span
                       ><a
-                        href="#"
+                        href="#blog"
                         class="flex items-center gap-2 text-[#E1B14F] font-semibold text-sm hover:text-[#1A1A1A] transition-colors group/link cursor-pointer"
                         >Ler Artigo<svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -2301,7 +2306,7 @@
             </div>
             <div class="mt-12 flex justify-center">
               <a
-                href="#"
+                href="#blog"
                 class="inline-flex items-center justify-center gap-2 text-[#E1B14F] font-semibold hover:text-[#1A1A1A] transition-colors group cursor-pointer"
                 >Ver todos os artigos<svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -2359,6 +2364,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#E1B14F] hover:text-[#1A1A1A] transition-all cursor-pointer"
+                    aria-label="LinkedIn LFA Engenharia"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -2382,6 +2388,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#E1B14F] hover:text-[#1A1A1A] transition-all cursor-pointer"
+                    aria-label="Instagram LFA Engenharia"
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -2624,14 +2631,14 @@
                   <a
                     id="btn-privacidade"
                     class="text-gray-400 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
-                    href="javascript:void(0)"
+                    href="#modal-privacidade"
                     >Política de Privacidade</a
                   >
                   <span class="text-gray-400 opacity-60">•</span>
                   <a
                     id="btn-termos"
                     class="text-gray-400 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
-                    href="javascript:void(0)"
+                    href="#modal-termos"
                     >Termos de Uso</a
                   >
                 </div>
@@ -2665,6 +2672,8 @@
           <div class="flex justify-center mb-6">
             <img
               alt="LFA Engenharia"
+              loading="lazy"
+              decoding="async"
               width="150"
               height="38"
               class="w-[150px] h-auto"
@@ -2773,6 +2782,7 @@
       <a
         id="back-to-top"
         href="#hero"
+        aria-label="Voltar ao topo"
         class="bg-[#E1B14F] text-[#1A1A1A] w-14 h-14 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer opacity-0 invisible translate-y-10"
       >
         <i data-lucide="arrow-up" class="w-8 h-8"></i>
@@ -2829,7 +2839,7 @@
             );
           }
         }
-      });
+      }, { passive: true });
     </script>
     
     <div id="modal-privacidade" class="legal-modal fixed inset-0 z-[9999] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4">
