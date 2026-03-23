@@ -21,14 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   let sectionPositions = [];
-  function calculatePositions() {
-    sectionPositions = Array.from(sections).map((section) => ({
+
+  function calculateSectionPositions() {
+    sectionPositions = Array.from(sections).map(section => ({
       id: section.getAttribute("id"),
-      offsetTop: section.offsetTop,
+      offsetTop: section.offsetTop
     }));
   }
-  calculatePositions();
-  window.addEventListener("resize", calculatePositions, { passive: true });
 
   function onScroll() {
     const scrollPosition = window.scrollY + window.innerHeight / 3;
@@ -65,16 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  let isScrolling = false;
-  window.addEventListener("scroll", () => {
-    if (!isScrolling) {
-      window.requestAnimationFrame(() => {
-        onScroll();
-        isScrolling = false;
-      });
-      isScrolling = true;
-    }
-  }, { passive: true });
+  calculateSectionPositions();
+  window.addEventListener("resize", calculateSectionPositions, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
   onScroll(); // Initial check
 
   // Modal logic
@@ -261,14 +253,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const privModal = document.getElementById("modal-privacidade");
   const termsModal = document.getElementById("modal-termos");
 
-  document.getElementById("btn-privacidade")?.addEventListener("click", (e) => {
-    e.preventDefault();
+  document.getElementById("btn-privacidade")?.addEventListener("click", () => {
     privModal.classList.add("active");
     document.body.style.overflow = "hidden";
   });
 
-  document.getElementById("btn-termos")?.addEventListener("click", (e) => {
-    e.preventDefault();
+  document.getElementById("btn-termos")?.addEventListener("click", () => {
     termsModal.classList.add("active");
     document.body.style.overflow = "hidden";
   });
