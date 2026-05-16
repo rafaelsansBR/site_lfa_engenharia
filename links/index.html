@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFA Engenharia | Links</title>
+    <meta name="description" content="LFA Engenharia. Conectando processos, tecnologia e infraestrutura.">
+    <link rel="icon" type="image/svg+xml" href="https://lfaengenharia.com/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://lfaengenharia.com/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="https://lfaengenharia.com/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="https://lfaengenharia.com/apple-touch-icon.png" />
+    
+    <style>
+        :root {
+            --bg-color-center: #0c1017;
+            --bg-color-edge: #05070a;
+            --primary-accent: #E1B14F;
+            --text-main: #FFFFFF;
+            --text-support: #9CA3AF;
+            --btn-bg: rgba(26, 26, 26, 0.7);
+            --btn-border: #343434;
+            --btn-hover-border: rgba(225, 177, 79, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color-edge);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        .bg-carousel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-color: var(--bg-color-edge);
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            animation: carouselFade 18s infinite;
+            will-change: opacity;
+        }
+
+        .bg-slide:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .bg-slide:nth-child(2) {
+            animation-delay: 6s;
+        }
+
+        .bg-slide:nth-child(3) {
+            animation-delay: 12s;
+        }
+
+        @keyframes carouselFade {
+            0% { opacity: 0; }
+            8.33% { opacity: 1; } /* 1.5s in */
+            33.33% { opacity: 1; } /* stays visible */
+            41.66% { opacity: 0; } /* 1.5s out */
+            100% { opacity: 0; }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 7, 10, 0.7); /* Escurecendo o fundo para contraste */
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            text-align: center;
+        }
+
+        /* Topo */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .separator {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(225,177,79,0.4) 20%, rgba(225,177,79,0.4) 80%, transparent);
+        }
+
+        /* Botões */
+        .links-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            min-height: 56px;
+            background-color: var(--primary-accent);
+            border: 1px solid var(--primary-accent);
+            border-radius: 9999px;
+            text-decoration: none;
+            color: #1A1A1A;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            gap: 1rem;
+        }
+
+        .link-button:hover, .link-button:focus {
+            background-color: #d4a045;
+            border-color: #d4a045;
+            box-shadow: 0 0 15px rgba(225, 177, 79, 0.4);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .link-button .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            color: #1A1A1A;
+        }
+
+        .link-button .text {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .link-button .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: #1A1A1A;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .link-button:hover .arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        /* Rodapé */
+        .footer {
+            margin-top: 1rem;
+            font-size: 0.8125rem;
+            color: var(--text-support);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-carousel" aria-hidden="true">
+        <img class="bg-slide" src="https://lfaengenharia.com/imgs/consultoria-engenharia-potencia-subestacao-sp.webp" alt="Subestação de energia elétrica de alta potência com transformadores industriais, representando os serviços de engenharia preditiva da LFA Engenharia." fetchpriority="high">
+        <img class="bg-slide" src="https://lfaengenharia.com/imgs/laudo-nr10-inspecao-painel-eletrico.webp" alt="Painel elétrico industrial com barramento de cobre e disjuntor Schneider Electric com monitor de campo exibindo status de permissão de trabalho ativo." loading="lazy">
+        <img class="bg-slide" src="https://lfaengenharia.com/imgs/engenharia-eletrica-arquitetura-bim-alphaville.webp" alt="Engenheiro segurando tablet com projeto de modelagem 3D BIM de instalações elétricas integradas dentro de uma obra residencial de alto padrão." loading="lazy">
+    </div>
+    <div class="bg-overlay" aria-hidden="true"></div>
+    <main class="container">
+        <!-- Topo -->
+        <header class="brand-header">
+            <img src="https://lfaengenharia.com/imgs/logo-lfa-engenharia-horizontal-white.png" alt="Logo LFA Engenharia" width="180" style="height: auto; max-width: 100%;">
+            <div class="separator" aria-hidden="true"></div>
+        </header>
+
+        <!-- Links -->
+        <nav class="links-group" aria-label="Links principais">
+            
+            <a href="https://wa.me/5511950727235?text=Olá+Lucas,+acessei+o+link+do+seu+Instagram+e+gostaria+de+solicitar+um+diagnóstico+técnico+para+o+meu+projeto." class="link-button" aria-label="Falar com Especialista via WhatsApp" target="_blank" rel="noopener noreferrer">
+                <div class="icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <span class="text">Falar com Especialista</span>
+                <div class="arrow" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </div>
+            </a>
+
+            <a href="https://lfaengenharia.com" class="link-button" aria-label="Acesse o Site LFA Engenharia" target="_blank" rel="noopener noreferrer">
+                <div class="icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <span class="text">Acesse o Site LFA Engenharia</span>
+                <div class="arrow" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </div>
+            </a>
+
+            <a href="https://lfaengenharia.com/pdf/Portfolio_LFA_Engenharia.pdf" class="link-button" aria-label="Baixar Portfólio de Projetos (PDF)" target="_blank" rel="noopener noreferrer">
+                <div class="icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                </div>
+                <span class="text">Baixar Portfolio de Projetos</span>
+                <div class="arrow" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </div>
+            </a>
+        </nav>
+
+        <!-- Rodapé -->
+        <footer class="footer">
+            <p>&copy; 2026 LFA Engenharia.<br>Conectando processos, tecnologia e infraestrutura.</p>
+        </footer>
+    </main>
+</body>
+</html>
