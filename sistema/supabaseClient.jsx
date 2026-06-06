@@ -163,6 +163,15 @@ async function sbUpsertClient({ name, cnpj, origin, category }) {
   return data;
 }
 
+/* Exclui cliente (RLS garante que apenas director pode). */
+async function sbDeleteClient(id) {
+  const { error } = await supabase
+    .from('clients')
+    .delete()
+    .eq('id', id);
+  if (error) { console.error('sbDeleteClient:', error); throw error; }
+}
+
 /* ── Mapper: DB row → formato dos componentes ────────────────────
    Os componentes existentes esperam campos como `cliente`, `cnpj`,
    `blocks`, `draft`, `valor`, `validade`, `data`, `origem`.
@@ -200,6 +209,6 @@ Object.assign(window, {
   sanitizeText, sanitizeBlocks,
   sbGetProfile,
   sbFetchProposals, sbCreateProposal, sbUpdateProposal, sbUpdateStatus, sbDeleteProposal,
-  sbFetchClients, sbSearchClients, sbUpsertClient,
+  sbFetchClients, sbSearchClients, sbUpsertClient, sbDeleteClient,
   mapProposalFromDB,
 });

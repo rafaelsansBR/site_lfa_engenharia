@@ -46,7 +46,7 @@ function EngineerView({ proposals, onStatusChange, onView, onNew, onEdit }) {
               {proposals.map((p) => (
                 <tr key={p.id} className="border-t border-white/5 hover:bg-white/[0.02] transition-colors">
                   <td className="px-6 py-4 align-top">
-                    <div className="text-white font-medium">{p.cliente}</div>
+                    <div className="text-white font-medium">{p.cliente || '(Sem Cliente)'}</div>
                     <div className="text-xs mt-0.5 flex items-center gap-x-2 gap-y-1 flex-wrap" style={{ color: T.fg3 }}>
                       <span>{p.id} · {p.data}</span>
                       <ValidadeTag validade={p.validade} />

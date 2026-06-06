@@ -75,7 +75,7 @@ function deriveClients(proposals) {
   proposals.forEach((p) => {
     const k = clientKey(p);
     if (!k) return;
-    if (!map.has(k)) map.set(k, { key: k, nome: p.cliente, cnpj: p.cnpj, items: [] });
+    if (!map.has(k)) map.set(k, { key: k, id: p._clientId, nome: p.cliente, cnpj: p.cnpj, items: [] });
     map.get(k).items.push(p);
   });
   return Array.from(map.values()).map((c) => {

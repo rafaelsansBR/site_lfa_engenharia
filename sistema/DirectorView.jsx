@@ -72,7 +72,7 @@ function DirectorView({ proposals, onDelete, onView }) {
                 return (
                   <tr key={p.id} className="border-t border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4 align-top">
-                      <div className="text-white font-medium">{p.cliente}</div>
+                      <div className="text-white font-medium">{p.cliente || '(Sem Cliente)'}</div>
                       <div className="text-xs mt-0.5" style={{ color: T.fg3 }}>{p.id} · {p.cnpj}</div>
                     </td>
                     <td className="px-4 py-4 align-top"><OriginTag origem={p.origem} /></td>

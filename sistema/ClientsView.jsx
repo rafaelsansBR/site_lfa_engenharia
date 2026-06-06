@@ -1,7 +1,7 @@
 /* ClientsView — Micro-CRM. Lista a base de clientes (derivada das propostas)
    e abre uma gaveta lateral com LTV, última interação e histórico de propostas. */
 
-function ClientsView({ proposals, onView }) {
+function ClientsView({ proposals, onView, role, onDeleteClient }) {
   const clients = React.useMemo(() => deriveClients(proposals), [proposals]);
   const [openKey, setOpenKey] = React.useState(null);
   const [q, setQ] = React.useState('');
@@ -71,7 +71,7 @@ function ClientsView({ proposals, onView }) {
         </div>
       </div>
 
-      <ClientDrawer client={active} onClose={() => setOpenKey(null)} onView={onView} />
+      <ClientDrawer client={active} onClose={() => setOpenKey(null)} onView={onView} role={role} onDeleteClient={onDeleteClient} />
     </div>
   );
 }
@@ -86,7 +86,7 @@ function KPIc({ label, value, sub, accent }) {
   );
 }
 
-function ClientDrawer({ client, onClose, onView }) {
+function ClientDrawer({ client, onClose, onView, role, onDeleteClient }) {
   React.useEffect(() => {
     const h = (e) => { if (e.key === 'Escape') onClose(); };
     if (client) document.addEventListener('keydown', h);
@@ -154,6 +154,16 @@ function ClientDrawer({ client, onClose, onView }) {
                 );
               })}
             </div>
+
+            {role === 'diretor' && (
+              <div className="p-6 border-t border-white/5 flex gap-3 justify-end" style={{ background: '#090D12' }}>
+                <button type="button" onClick={() => onDeleteClient(client)}
+                  className="w-full flex items-center justify-center gap-2 font-semibold rounded-full py-3 text-sm transition-all duration-300 hover:bg-[rgba(248,113,113,0.08)]"
+                  style={{ color: '#f87171', border: '1px solid rgba(248,113,113,0.3)' }}>
+                  <Icon name="trash-2" className="w-4 h-4" /> Excluir Cliente
+                </button>
+              </div>
+            )}
           </React.Fragment>
         )}
       </div>

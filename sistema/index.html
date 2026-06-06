@@ -139,6 +139,28 @@ function ConfirmDelete({ target, onConfirm, onCancel }) {
   );
 }
 
+function ConfirmDeleteClient({ target, onConfirm, onCancel }) {
+  if (!target) return null;
+  return (
+    <div onClick={(e)=>{if(e.target===e.currentTarget)onCancel();}}
+      className="fixed inset-0 z-[400] flex items-center justify-center p-4" style={{ background:'rgba(3,4,6,0.8)', backdropFilter:'blur(6px)' }}>
+      <div className="w-full max-w-sm rounded-2xl p-7" style={{ background:T.surface, border:'1px solid rgba(248,113,113,0.3)', boxShadow:'0 30px 60px -15px rgba(0,0,0,0.7)' }}>
+        <div className="w-11 h-11 rounded-full flex items-center justify-center mb-4" style={{ background:'rgba(248,113,113,0.12)', border:'1px solid rgba(248,113,113,0.3)' }}>
+          <Icon name="trash-2" className="w-5 h-5" style={{ color:'#f87171' }} />
+        </div>
+        <h3 className="font-[Outfit] font-bold text-white text-lg mb-1.5">Excluir cliente?</h3>
+        <p className="text-sm mb-6" style={{ color:T.fg2 }}>
+          O cliente <span className="text-white font-medium">{target.nome}</span> será removido permanentemente do sistema. As propostas associadas a ele continuarão registradas, mas sem vínculo de cliente. Esta ação é exclusiva do Diretor.
+        </p>
+        <div className="flex gap-3 justify-end">
+          <button onClick={onCancel} className="px-4 py-2.5 rounded-full text-sm font-medium transition-colors hover:text-white" style={{ color:T.fg2, border:'1px solid rgba(255,255,255,0.15)' }}>Cancelar</button>
+          <button onClick={onConfirm} className="px-5 py-2.5 rounded-full text-sm font-semibold text-white transition-all hover:brightness-110" style={{ background:'#dc2626' }}>Excluir</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Persistência via Supabase — dados são buscados do banco no mount.
 // O localStorage não é mais usado como fonte de dados.
 
@@ -152,6 +174,7 @@ function App() {
   const [loadingData, setLoadingData] = useState(false);
   const [docId, setDocId] = useState(null);
   const [toDelete, setToDelete] = useState(null);
+  const [toDeleteClient, setToDeleteClient] = useState(null);
   const [composing, setComposing] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -216,6 +239,15 @@ function App() {
       setToDelete(null);
       await loadData();
     } catch (err) { console.error('remove error:', err); }
+  };
+
+  const removeClient = async () => {
+    if (!toDeleteClient) return;
+    try {
+      await sbDeleteClient(toDeleteClient.id);
+      setToDeleteClient(null);
+      await loadData();
+    } catch (err) { console.error('removeClient error:', err); }
   };
 
   const editDraft = (id) => { setEditingId(id); setComposing(true); };
@@ -319,7 +351,7 @@ function App() {
         </div>
 
         {effectiveView==='engenheiro' && <EngineerView proposals={proposals} onStatusChange={setStatus} onView={setDocId} onNew={() => { setEditingId(null); setComposing(true); }} onEdit={editDraft} />}
-        {effectiveView==='clientes' && <ClientsView proposals={proposals} onView={setDocId} />}
+        {effectiveView==='clientes' && <ClientsView proposals={proposals} onView={setDocId} role={role} onDeleteClient={setToDeleteClient} />}
         {effectiveView==='diretor' && role==='diretor' && <DirectorView proposals={proposals} onDelete={setToDelete} onView={setDocId} />}
       </main>
 
@@ -329,6 +361,7 @@ function App() {
         theme="light" layout={LAYOUT_MAP[t.docLayout] || 'classic'}
         grid={GRID_MAP[t.docGrid] || 'subtle'} accent={ACCENT_MAP[t.docAccent] || 'gold'} />
       <ConfirmDelete target={toDelete} onConfirm={remove} onCancel={() => setToDelete(null)} />
+      <ConfirmDeleteClient target={toDeleteClient} onConfirm={removeClient} onCancel={() => setToDeleteClient(null)} />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
 
       <TweaksPanel>
