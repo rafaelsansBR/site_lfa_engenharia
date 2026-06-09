@@ -352,7 +352,7 @@ function App() {
 
         {effectiveView==='engenheiro' && <EngineerView proposals={proposals} onStatusChange={setStatus} onView={setDocId} onNew={() => { setEditingId(null); setComposing(true); }} onEdit={editDraft} />}
         {effectiveView==='clientes' && <ClientsView proposals={proposals} onView={setDocId} role={role} onDeleteClient={setToDeleteClient} />}
-        {effectiveView==='diretor' && role==='diretor' && <DirectorView proposals={proposals} onDelete={setToDelete} onView={setDocId} />}
+        {effectiveView==='diretor' && role==='diretor' && <DirectorView proposals={proposals} onDelete={setToDelete} onView={setDocId} onEdit={editDraft} />}
       </main>
 
       <Composer open={composing} onClose={closeComposer} onEmit={afterSave} onSaveDraft={afterSave} editing={editing} />

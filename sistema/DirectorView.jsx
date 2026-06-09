@@ -15,7 +15,7 @@ function KPI({ label, value, sub, accent, icon }) {
   );
 }
 
-function DirectorView({ proposals, onDelete, onView }) {
+function DirectorView({ proposals, onDelete, onView, onEdit }) {
   const emitted = proposals.filter((p) => !p.draft);
   const pipeline = emitted.reduce((a, p) => a + proposalTotal(p), 0);
   const approved = emitted.filter((p) => p.status === 'Aprovado').reduce((a, p) => a + proposalTotal(p), 0);
@@ -88,6 +88,10 @@ function DirectorView({ proposals, onDelete, onView }) {
                         <button onClick={() => onView(p.id)} title="Ver Proposta"
                           className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-white/5" style={{ color: T.fg2 }}>
                           <Icon name="eye" className="w-4 h-4" />
+                        </button>
+                        <button onClick={() => onEdit(p.id)} title="Editar Proposta"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-white/5" style={{ color: T.fg2 }}>
+                          <Icon name="pencil" className="w-4 h-4" />
                         </button>
                         <button onClick={() => onDelete(p)} title="Excluir registro"
                           className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-[rgba(248,113,113,0.12)]" style={{ color: T.fg3 }}>

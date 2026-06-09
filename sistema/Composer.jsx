@@ -381,7 +381,7 @@ function ClientAutocomplete({ value, onPick, onName }) {
 }
 
 function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
-  const blank = () => ({ cliente: '', cnpj: '', pagamento: PAYMENT_OPTIONS[0], pagamentoCustom: '', validade: futureISO(15), origem: '' });
+  const blank = () => ({ cliente: '', cnpj: '', pagamento: PAYMENT_OPTIONS[0], pagamentoCustom: '', validade: futureISO(15), origem: '', status: 'Rascunho', draft: true });
   const [meta, setMeta] = React.useState(blank);
   const [blocks, setBlocks] = React.useState(() => [newBlock('item')]);
   const setM = (k) => (e) => setMeta({ ...meta, [k]: e.target.value });
@@ -395,6 +395,8 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
         pagamento: isCustomPay ? PAYMENT_CUSTOM : (editing.pagamento || PAYMENT_OPTIONS[0]),
         pagamentoCustom: isCustomPay ? editing.pagamento : '',
         validade: editing.validade || futureISO(15), origem: editing.origem || '',
+        status: editing.status || 'Enviado',
+        draft: editing.draft ?? false,
         _dbId: editing._dbId || null, _clientId: editing._clientId || null,
       });
       setBlocks((editing.blocks && editing.blocks.length ? editing.blocks : [newBlock('item')]).map((b) => b.type === 'item' ? { ...b, valor: moneyToMask(b.valor) } : { ...b }));
@@ -449,8 +451,9 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
       const client = await sbUpsertClient({ name: d.cliente, cnpj: d.cnpj || null, origin: d.origem || null });
       if (d._dbId) {
         // Updating existing proposal (director edit)
+        const targetStatus = d.draft === false ? d.status : 'Enviado';
         await sbUpdateProposal(d._dbId, {
-          client_id: client.id, status: d.draft === true ? 'Enviado' : 'Enviado',
+          client_id: client.id, status: targetStatus,
           is_draft: false, scope_blocks: d.blocks, total_value: proposalTotal(d),
           payment_method: d.pagamento, validity_date: d.validade || null, origin: d.origem,
         });
@@ -510,15 +513,17 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
             <div className="text-[10px] uppercase tracking-wider" style={{ color: T.fg3 }}>Investimento total</div>
             <div className="font-[Outfit] font-bold text-lg" style={{ color: T.gold }}>{BRL(total)}</div>
           </div>
-          <button onClick={saveDraft} disabled={!canDraft || saving} title="Salva sem travar — editável depois"
-            className="flex items-center gap-2 font-medium rounded-full px-4 py-3 text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:bg-white/5"
-            style={{ color: T.fg2, border: '1px solid rgba(255,255,255,0.15)' }}>
-            <Icon name={saving ? 'loader-2' : 'save'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} /> <span className="hidden sm:inline">Salvar </span>Rascunho
-          </button>
+          {meta.draft !== false && (
+            <button onClick={saveDraft} disabled={!canDraft || saving} title="Salva sem travar — editável depois"
+              className="flex items-center gap-2 font-medium rounded-full px-4 py-3 text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:bg-white/5"
+              style={{ color: T.fg2, border: '1px solid rgba(255,255,255,0.15)' }}>
+              <Icon name={saving ? 'loader-2' : 'save'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} /> <span className="hidden sm:inline">Salvar </span>Rascunho
+            </button>
+          )}
           <button onClick={emit} disabled={!canEmit || saving}
             className="flex items-center gap-2 font-semibold rounded-full px-6 py-3 text-sm transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-[0_0_22px_rgba(225,177,79,0.55)]"
             style={{ background: T.gold, color: T.s1 }}>
-            {saving ? 'Emitindo…' : 'Emitir Proposta'} <Icon name={saving ? 'loader-2' : 'arrow-right'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} />
+            {saving ? 'Salvando…' : (meta.draft === false ? 'Salvar Alterações' : 'Emitir Proposta')} <Icon name={saving ? 'loader-2' : 'arrow-right'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} />
           </button>
         </div>
       </div>
@@ -526,8 +531,15 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
       <div className="py-9 px-4 flex justify-center">
         <div className="w-full max-w-[760px] flex flex-col gap-5">
           <div>
-            <h1 className="font-[Outfit] font-bold text-white text-2xl">{editing ? 'Editar Proposta' : 'Nova Proposta'}</h1>
-            <p className="text-sm mt-1" style={{ color: T.fg2 }}>{editing ? <>Rascunho <b className="text-white">{editing.id}</b> — ajuste e emita quando estiver pronto.</> : 'Monte o escopo bloco a bloco. Vale quase como um contrato — itens somam o investimento, cláusulas e exclusões blindam o acordo.'}</p>
+            <h1 className="font-[Outfit] font-bold text-white text-2xl">{editing ? (editing.draft === false ? 'Editar Proposta Emitida' : 'Editar Proposta') : 'Nova Proposta'}</h1>
+            <p className="text-sm mt-1" style={{ color: T.fg2 }}>
+              {editing
+                ? (editing.draft === false
+                    ? <>Você está editando a proposta emitida <b className="text-white">{editing.id}</b>. As alterações salvam a proposta diretamente sem mudar seu ID/código.</>
+                    : <>Rascunho <b className="text-white">{editing.id}</b> — ajuste e emita quando estiver pronto.</>)
+                : 'Monte o escopo bloco a bloco. Vale quase como um contrato — itens somam o investimento, cláusulas e exclusões blindam o acordo.'
+              }
+            </p>
           </div>
 
           {/* client card */}
