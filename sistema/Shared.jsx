@@ -228,6 +228,26 @@ const PAYMENT_OPTIONS = [
 ];
 const PAYMENT_CUSTOM = 'Personalizado (Texto Livre)';
 
+function formatProposalCode(code) {
+  const m = String(code || '').match(/^(.+?)(?:\s+rev\.\s*(\d+))?$/);
+  if (!m) return { base: code, rev: null };
+  return { base: m[1], rev: m[2] || null };
+}
+
+function ProposalCode({ code, className }) {
+  const { base, rev } = formatProposalCode(code);
+  return (
+    <span className={"inline-flex items-center gap-1.5 " + (className || '')}>
+      <span className="font-medium">{base}</span>
+      {rev && (
+        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-white/10 text-white border border-white/15" style={{ lineHeight: 1 }}>
+          rev. {rev}
+        </span>
+      )}
+    </span>
+  );
+}
+
 Object.assign(window, {
   T, Icon, BRL, COMMISSION_RATE, parseBRL, STATUSES, STATUS_KEYS, StatusBadge,
   LEAD_ORIGINS, LEAD_ORIGIN_KEYS, originInfo, originRate, isEligible, OriginTag,
@@ -235,4 +255,5 @@ Object.assign(window, {
   BLOCK_TYPES, BLOCK_ORDER, newBlock, blockMoney, proposalTotal,
   PAYMENT_OPTIONS, PAYMENT_CUSTOM,
   onlyDigits, cpfCnpjLabel, maskCpfCnpj, maskMoeda, maskQtd, MESES_PT, isoToDate, dateToISO, futureISO, fmtDateBR, fmtDateLong, isExpired,
+  formatProposalCode, ProposalCode,
 });

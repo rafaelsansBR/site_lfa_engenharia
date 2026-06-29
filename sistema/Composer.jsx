@@ -380,11 +380,29 @@ function ClientAutocomplete({ value, onPick, onName }) {
   );
 }
 
-function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
+function Composer({ open, onClose, onEmit, onSaveDraft, editing, user, proposals }) {
   const blank = () => ({ cliente: '', cnpj: '', pagamento: PAYMENT_OPTIONS[0], pagamentoCustom: '', validade: futureISO(15), origem: '', status: 'Rascunho', draft: true });
   const [meta, setMeta] = React.useState(blank);
   const [blocks, setBlocks] = React.useState(() => [newBlock('item')]);
   const setM = (k) => (e) => setMeta({ ...meta, [k]: e.target.value });
+
+  const isRevision = editing && editing.draft === false && user && user.role !== 'diretor';
+
+  const revisionCode = React.useMemo(() => {
+    if (!isRevision || !editing || !proposals) return null;
+    const { base } = formatProposalCode(editing.id);
+    let maxRev = 0;
+    proposals.forEach((p) => {
+      const { base: b, rev: r } = formatProposalCode(p.id);
+      if (b === base) {
+        const revNum = parseInt(r, 10) || 0;
+        if (revNum > maxRev) {
+          maxRev = revNum;
+        }
+      }
+    });
+    return `${base} rev. ${maxRev + 1}`;
+  }, [isRevision, editing, proposals]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -449,8 +467,16 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
       const d = serialize();
       // Upsert client via RPC
       const client = await sbUpsertClient({ name: d.cliente, cnpj: d.cnpj || null, origin: d.origem || null });
-      if (d._dbId) {
-        // Updating existing proposal (director edit)
+      if (isRevision) {
+        // Revision flow for engineer: INSERT a new proposal with the revision code
+        await sbCreateProposal({
+          clientId: client.id, status: 'Enviado', isDraft: false,
+          blocks: d.blocks, totalValue: proposalTotal(d),
+          paymentMethod: d.pagamento, validityDate: d.validade || null, origin: d.origem,
+          proposalCode: revisionCode,
+        });
+      } else if (d._dbId) {
+        // Updating existing proposal (director edit or engineer draft edit)
         const targetStatus = d.draft === false ? d.status : 'Enviado';
         await sbUpdateProposal(d._dbId, {
           client_id: client.id, status: targetStatus,
@@ -478,7 +504,15 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
     try {
       const d = serialize();
       const client = await sbUpsertClient({ name: d.cliente, cnpj: d.cnpj || null, origin: d.origem || null });
-      if (d._dbId) {
+      if (isRevision) {
+        // Saving a revision as a draft: INSERT a new proposal with revision code, is_draft=true
+        await sbCreateProposal({
+          clientId: client.id, status: 'Rascunho', isDraft: true,
+          blocks: d.blocks, totalValue: proposalTotal(d),
+          paymentMethod: d.pagamento, validityDate: d.validade || null, origin: d.origem || null,
+          proposalCode: revisionCode,
+        });
+      } else if (d._dbId) {
         await sbUpdateProposal(d._dbId, {
           client_id: client.id, status: 'Rascunho',
           is_draft: true, scope_blocks: d.blocks, total_value: proposalTotal(d),
@@ -513,7 +547,7 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
             <div className="text-[10px] uppercase tracking-wider" style={{ color: T.fg3 }}>Investimento total</div>
             <div className="font-[Outfit] font-bold text-lg" style={{ color: T.gold }}>{BRL(total)}</div>
           </div>
-          {meta.draft !== false && (
+          {(meta.draft !== false || isRevision) && (
             <button onClick={saveDraft} disabled={!canDraft || saving} title="Salva sem travar — editável depois"
               className="flex items-center gap-2 font-medium rounded-full px-4 py-3 text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:bg-white/5"
               style={{ color: T.fg2, border: '1px solid rgba(255,255,255,0.15)' }}>
@@ -523,7 +557,7 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
           <button onClick={emit} disabled={!canEmit || saving}
             className="flex items-center gap-2 font-semibold rounded-full px-6 py-3 text-sm transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed enabled:hover:shadow-[0_0_22px_rgba(225,177,79,0.55)]"
             style={{ background: T.gold, color: T.s1 }}>
-            {saving ? 'Salvando…' : (meta.draft === false ? 'Salvar Alterações' : 'Emitir Proposta')} <Icon name={saving ? 'loader-2' : 'arrow-right'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} />
+            {saving ? 'Salvando…' : (isRevision ? 'Salvar Nova Revisão' : (meta.draft === false ? 'Salvar Alterações' : 'Emitir Proposta'))} <Icon name={saving ? 'loader-2' : 'arrow-right'} className={'w-4 h-4' + (saving ? ' animate-spin' : '')} />
           </button>
         </div>
       </div>
@@ -531,13 +565,17 @@ function Composer({ open, onClose, onEmit, onSaveDraft, editing }) {
       <div className="py-9 px-4 flex justify-center">
         <div className="w-full max-w-[760px] flex flex-col gap-5">
           <div>
-            <h1 className="font-[Outfit] font-bold text-white text-2xl">{editing ? (editing.draft === false ? 'Editar Proposta Emitida' : 'Editar Proposta') : 'Nova Proposta'}</h1>
+            <h1 className="font-[Outfit] font-bold text-white text-2xl">
+              {isRevision ? 'Nova Revisão da Proposta' : (editing ? (editing.draft === false ? 'Editar Proposta Emitida' : 'Editar Proposta') : 'Nova Proposta')}
+            </h1>
             <p className="text-sm mt-1" style={{ color: T.fg2 }}>
-              {editing
-                ? (editing.draft === false
-                    ? <>Você está editando a proposta emitida <b className="text-white">{editing.id}</b>. As alterações salvam a proposta diretamente sem mudar seu ID/código.</>
-                    : <>Rascunho <b className="text-white">{editing.id}</b> — ajuste e emita quando estiver pronto.</>)
-                : 'Monte o escopo bloco a bloco. Vale quase como um contrato — itens somam o investimento, cláusulas e exclusões blindam o acordo.'
+              {isRevision
+                ? <>Você está criando uma revisão para a proposta emitida <b className="text-white">{editing.id}</b>. Ela será registrada como <b className="text-white">{revisionCode}</b>.</>
+                : (editing
+                    ? (editing.draft === false
+                        ? <>Você está editando a proposta emitida <b className="text-white">{editing.id}</b>. As alterações salvam a proposta diretamente sem mudar seu ID/código.</>
+                        : <>Rascunho <b className="text-white">{editing.id}</b> — ajuste e emita quando estiver pronto.</>)
+                    : 'Monte o escopo bloco a bloco. Vale quase como um contrato — itens somam o investimento, cláusulas e exclusões blindam o acordo.')
               }
             </p>
           </div>

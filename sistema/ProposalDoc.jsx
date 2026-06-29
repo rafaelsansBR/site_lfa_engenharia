@@ -231,7 +231,7 @@ function HeroBrand({ p, d }) {
       <Brandmark d={d} />
       <div className="text-right">
         <div className="font-[Outfit] font-bold uppercase tracking-wider text-sm" style={{ color: d.accent }}>Proposta Comercial</div>
-        <div className="text-xs mt-1" style={{ color: d.fg2 }}>Nº {p.id}</div>
+        <div className="text-xs mt-1" style={{ color: d.fg2 }}>Nº {formatProposalCode(p.id).base}</div>
         <div className="text-xs" style={{ color: d.fg3 }}>Emissão: {p.data}</div>
       </div>
     </div>
@@ -444,7 +444,9 @@ function ProposalDoc({ proposal, onClose, theme = 'dark', layout = 'classic', gr
           <Icon name="arrow-left" className="w-4 h-4" /> Voltar
         </button>
         <div className="flex items-center gap-3">
-          <span className="text-xs font-medium uppercase tracking-wider hidden sm:block" style={{ color: T.fg3 }}>Documento · {p.id}</span>
+          <span className="text-xs font-medium uppercase tracking-wider hidden sm:flex items-center gap-1.5" style={{ color: T.fg3 }}>
+            Documento · <ProposalCode code={p.id} />
+          </span>
           <span className="flex items-center gap-1.5 text-[11px] font-semibold rounded-full px-2.5 py-1" style={{ background: 'rgba(225,177,79,0.12)', color: T.gold, border: '1px solid rgba(225,177,79,0.28)' }}>
             <Icon name="files" className="w-3 h-3" /> {pageCount} {pageCount === 1 ? 'página' : 'páginas'} · A4
           </span>

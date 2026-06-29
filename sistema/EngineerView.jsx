@@ -48,7 +48,10 @@ function EngineerView({ proposals, onStatusChange, onView, onNew, onEdit }) {
                   <td className="px-6 py-4 align-top">
                     <div className="text-white font-medium">{p.cliente || '(Sem Cliente)'}</div>
                     <div className="text-xs mt-0.5 flex items-center gap-x-2 gap-y-1 flex-wrap" style={{ color: T.fg3 }}>
-                      <span>{p.id} · {p.data}</span>
+                      <span className="flex items-center gap-1.5 flex-wrap">
+                        <ProposalCode code={p.id} />
+                        <span>· {p.data}</span>
+                      </span>
                       <ValidadeTag validade={p.validade} />
                     </div>
                   </td>
@@ -69,11 +72,18 @@ function EngineerView({ proposals, onStatusChange, onView, onNew, onEdit }) {
                           </button>
                         )
                         : (
-                          <button onClick={() => onView(p.id)}
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3.5 py-2 transition-all hover:border-[#E1B14F]"
-                            style={{ color: T.gold, border: '1px solid rgba(225,177,79,0.3)' }}>
-                            <Icon name="eye" className="w-3.5 h-3.5" /> Ver
-                          </button>
+                          <React.Fragment>
+                            <button onClick={() => onEdit(p.id)} title="Revisar proposta"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3.5 py-2 transition-all hover:border-[#E1B14F]"
+                              style={{ color: T.gold, border: '1px solid rgba(225,177,79,0.3)' }}>
+                              <Icon name="pencil" className="w-3.5 h-3.5" /> Revisar
+                            </button>
+                            <button onClick={() => onView(p.id)}
+                              className="inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-3.5 py-2 transition-all hover:bg-white/5"
+                              style={{ color: T.fg2, border: '1px solid rgba(255,255,255,0.12)' }}>
+                              <Icon name="eye" className="w-3.5 h-3.5" /> Ver
+                            </button>
+                          </React.Fragment>
                         )}
                     </div>
                   </td>

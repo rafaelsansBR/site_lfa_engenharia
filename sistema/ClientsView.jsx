@@ -141,7 +141,10 @@ function ClientDrawer({ client, onClose, onView, role, onDeleteClient }) {
                     className={'text-left rounded-xl p-3.5 transition-colors group ' + (isDraft ? 'cursor-default' : 'hover:bg-white/[0.03] cursor-pointer')}
                     style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', opacity: isDraft ? 0.72 : 1 }}>
                     <div className="flex items-center justify-between gap-3">
-                      <span className="text-xs" style={{ color: T.fg3 }}>{p.id} · {p.data}</span>
+                      <span className="text-xs flex items-center gap-1.5 flex-wrap" style={{ color: T.fg3 }}>
+                        <ProposalCode code={p.id} />
+                        <span>· {p.data}</span>
+                      </span>
                       <StatusBadge status={p.status} />
                     </div>
                     <div className="flex items-end justify-between gap-3 mt-2">

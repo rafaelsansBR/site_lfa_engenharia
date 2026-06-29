@@ -73,7 +73,10 @@ function DirectorView({ proposals, onDelete, onView, onEdit }) {
                   <tr key={p.id} className="border-t border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="px-6 py-4 align-top">
                       <div className="text-white font-medium">{p.cliente || '(Sem Cliente)'}</div>
-                      <div className="text-xs mt-0.5" style={{ color: T.fg3 }}>{p.id} · {p.cnpj}</div>
+                      <div className="text-xs mt-0.5 flex items-center gap-1.5 flex-wrap" style={{ color: T.fg3 }}>
+                        <ProposalCode code={p.id} />
+                        {p.cnpj && <span>· {p.cnpj}</span>}
+                      </div>
                     </td>
                     <td className="px-4 py-4 align-top"><OriginTag origem={p.origem} /></td>
                     <td className="px-4 py-4 align-top whitespace-nowrap text-white font-semibold">{BRL(proposalTotal(p))}</td>

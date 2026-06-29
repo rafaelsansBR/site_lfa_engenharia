@@ -118,10 +118,11 @@
       saved.forEach(([el, s]) => { Object.keys(s).forEach((k) => { el.style[k] = s[k]; }); });
     }
 
-    // nome do arquivo garantido (cliente + código)
+    // nome do arquivo garantido (cliente + código base sem sufixo de revisão)
     const safe = ((p && p.cliente) || 'Proposta')
       .replace(/[—–]/g, '-').replace(/[^\w\sÀ-ÿ-]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60) || 'Proposta';
-    doc.save('Proposta ' + ((p && p.id) || '') + ' - ' + safe + '.pdf');
+    const baseCode = p && p.id ? window.formatProposalCode(p.id).base : '';
+    doc.save('Proposta ' + baseCode + ' - ' + safe + '.pdf');
     return Promise.resolve();
   }
 

@@ -78,7 +78,31 @@ async function sbFetchProposals() {
 }
 
 /* Cria proposta via RPC segura (server preenche tenant_id, created_by, proposal_code). */
-async function sbCreateProposal({ clientId, status, isDraft, blocks, totalValue, paymentMethod, validityDate, origin }) {
+async function sbCreateProposal({ clientId, status, isDraft, blocks, totalValue, paymentMethod, validityDate, origin, proposalCode }) {
+  if (proposalCode) {
+    const profile = await sbGetProfile();
+    if (!profile) throw new Error('Usuário não autenticado ou perfil não encontrado.');
+    const { data, error } = await supabase
+      .from('proposals')
+      .insert({
+        proposal_code: proposalCode,
+        client_id: clientId,
+        status: status,
+        is_draft: isDraft,
+        scope_blocks: sanitizeBlocks(blocks),
+        total_value: totalValue,
+        payment_method: sanitizeText(paymentMethod),
+        validity_date: validityDate,
+        origin: origin,
+        tenant_id: profile.tenant_id,
+        created_by: profile.id
+      })
+      .select()
+      .single();
+    if (error) { console.error('sbCreateProposal (insert revision):', error); throw error; }
+    return data;
+  }
+
   const { data, error } = await supabase.rpc('create_proposal', {
     p_client_id: clientId,
     p_status: status,
