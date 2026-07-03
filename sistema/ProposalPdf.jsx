@@ -29,16 +29,49 @@
     });
   }
 
-  // NOTA: a função liftTextForRaster foi REMOVIDA.
-  // Ela tentava corrigir um deslocamento cosmético de ~6px na baseline do
-  // html2canvas envolvendo cada nó de texto num <span> posicionado. Porém,
-  // qualquer manipulação do DOM no clone dispara bugs graves do html2canvas:
-  //   - Colapso de espaços entre palavras ("Lucas Feitosa" → "LucasFeitosa")
-  //   - Corte de textos multi-linha (introdução cortada)
-  //   - Expansão de colunas em tabelas/flex (layout quebrado)
-  //   - Desalinhamento de ícones SVG em relação ao texto
-  // A solução definitiva é NÃO manipular o DOM do clone. O PDF agora
-  // renderiza exatamente igual à tela — fiel pixel a pixel.
+  // CORREÇÃO DE RASTER: o html2canvas desenha a baseline do texto mais baixa
+  // que o navegador, por um valor proporcional ao font-size (~0,48×). Sem esta
+  // correção, textos ficam desalinhados de ícones, círculos e bordas no PDF.
+  // A função envolve cada nó de texto num <span> com position:relative e top
+  // negativo, SOMENTE no clone capturado (não altera o DOM em tela).
+  //
+  // IMPORTANTE: esta função depende de NÃO haver letter-spacing nem
+  // text-align:justify nos elementos do documento, pois essas propriedades
+  // disparam bugs no html2canvas (colapso de espaços e corte de texto).
+  // Ambas já foram removidas do ProposalDoc.jsx.
+  const RASTER_LIFT_K = 0.48;
+  function liftTextForRaster(clonedDoc) {
+    try {
+      const win = clonedDoc.defaultView || window;
+      const scope = clonedDoc.querySelector('.doc-sizer') || clonedDoc.body;
+      if (!scope) return;
+
+      // Neutraliza letter-spacing no clone inteiro — o html2canvas colapsa
+      // espaços entre palavras quando letter-spacing está ativo em elementos
+      // com position:relative. Sem isso, "Página 1 de 2" vira "Página1de2".
+      // O letter-spacing (classe tracking-wider do Tailwind) continua visível
+      // na tela; só é removido no clone usado para rasterizar.
+      const fix = clonedDoc.createElement('style');
+      fix.textContent = '.doc-sizer, .doc-sizer * { letter-spacing: normal !important; }';
+      clonedDoc.head.appendChild(fix);
+      const walker = clonedDoc.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null);
+      const nodes = [];
+      let n;
+      while ((n = walker.nextNode())) { if (n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n); }
+      nodes.forEach((tn) => {
+        const parent = tn.parentNode;
+        if (!parent || parent.nodeType !== 1) return;
+        const tag = (parent.tagName || '').toLowerCase();
+        if (tag === 'svg' || tag === 'style' || tag === 'script' || tag === 'title') return;
+        const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
+        const span = clonedDoc.createElement('span');
+        span.style.position = 'relative';
+        span.style.top = '-' + (RASTER_LIFT_K * fs) + 'px';
+        parent.replaceChild(span, tn);
+        span.appendChild(tn);
+      });
+    } catch (e) {}
+  }
 
   async function downloadProposalPdf(p, opts) {
     opts = opts || {};
@@ -72,7 +105,7 @@
         const el = pages[i];
         const pw = el.offsetWidth, ph = el.offsetHeight;
         const sx = PW / pw, sy = PH / ph;           // px → pt por eixo
-        const canvas = await h2c(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false, width: pw, height: ph, windowWidth: pw, windowHeight: ph });
+        const canvas = await h2c(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false, width: pw, height: ph, windowWidth: pw, windowHeight: ph, onclone: liftTextForRaster });
         if (i > 0) doc.addPage();
         doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, PW, PH, undefined, 'FAST');
 
