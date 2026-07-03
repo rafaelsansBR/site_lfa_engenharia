@@ -253,7 +253,7 @@ function HeroClient({ p, d }) {
 
 function HeroIntro({ d, layout }) {
   return (
-    <p className="text-sm leading-relaxed" style={{ color: d.fg2, textAlign: 'justify', hyphens: 'auto', WebkitHyphens: 'auto' }}>{INTRO}</p>
+    <p className="text-sm leading-relaxed" style={{ color: d.fg2 }}>{INTRO}</p>
   );
 }
 
