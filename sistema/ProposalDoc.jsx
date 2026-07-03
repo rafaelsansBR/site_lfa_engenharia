@@ -245,7 +245,7 @@ function HeroClient({ p, d }) {
       <Eyebrow d={d}>Preparado para</Eyebrow>
       <div className="font-[Outfit] font-bold text-xl" style={{ color: d.fg }}>{p.cliente}</div>
       {p.cnpj && p.cnpj.trim() && (
-        <div className="text-sm mt-1" style={{ color: d.fg2 }}>{cpfCnpjLabel(p.cnpj)} {p.cnpj}</div>
+        <div className="text-sm mt-1" style={{ color: d.fg2 }}>{cpfCnpjLabel(p.cnpj)}{'\u00A0'}{p.cnpj}</div>
       )}
     </div>
   );

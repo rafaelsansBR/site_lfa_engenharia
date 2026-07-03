@@ -58,6 +58,14 @@
         const tag = (parent.tagName || '').toLowerCase();
         if (tag === 'svg' || tag === 'style' || tag === 'script' || tag === 'title') return;
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
+        // FIX: substituir espaços normais por espaços não-quebráveis (NBSP)
+        // ANTES de envolver o texto no span posicionado. O html2canvas colapsa
+        // word-spacing em spans com position:relative, fazendo textos como
+        // "Lucas Feitosa Araujo" renderizarem "LucasFeitosaAraujo". O NBSP
+        // (\u00A0) força o html2canvas a preservar a largura do espaço.
+        // Seguro porque só afeta o clone (documento original intacto) e o
+        // texto já está diagramado (não vai re-quebrar).
+        tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
         const span = clonedDoc.createElement('span');
         span.style.position = 'relative';
         span.style.top = '-' + (RASTER_LIFT_K * fs) + 'px';
