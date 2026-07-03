@@ -58,14 +58,16 @@
         const tag = (parent.tagName || '').toLowerCase();
         if (tag === 'svg' || tag === 'style' || tag === 'script' || tag === 'title') return;
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
-        // FIX: substituir espaços normais por espaços não-quebráveis (NBSP)
-        // ANTES de envolver o texto no span posicionado. O html2canvas colapsa
-        // word-spacing em spans com position:relative, fazendo textos como
-        // "Lucas Feitosa Araujo" renderizarem "LucasFeitosaAraujo". O NBSP
-        // (\u00A0) força o html2canvas a preservar a largura do espaço.
-        // Seguro porque só afeta o clone (documento original intacto) e o
-        // texto já está diagramado (não vai re-quebrar).
-        tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
+        // FIX: o html2canvas colapsa word-spacing em textos CURTOS dentro de
+        // spans com position:relative ("LucasFeitosaAraujo"). Substituir
+        // espaços por NBSP (\u00A0) resolve, mas o NBSP impede word-wrap —
+        // o que corta parágrafos longos. Solução: aplicar NBSP apenas em
+        // textos ≤ 80 caracteres (nomes, labels, rodapé, títulos de item).
+        // Textos longos (parágrafo de introdução, descrições, cláusulas)
+        // mantêm espaços normais e quebram linha normalmente.
+        if (tn.nodeValue.length <= 80) {
+          tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
+        }
         const span = clonedDoc.createElement('span');
         span.style.position = 'relative';
         span.style.top = '-' + (RASTER_LIFT_K * fs) + 'px';
