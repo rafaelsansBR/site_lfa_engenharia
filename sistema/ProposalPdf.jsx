@@ -29,48 +29,16 @@
     });
   }
 
-  // CORREÇÃO DE RASTER: o html2canvas desenha a baseline do texto mais baixa
-  // que o navegador, por um valor PROPORCIONAL ao tamanho da fonte
-  // (≈0,46 × font-size, medido empiricamente — não é constante). Como afeta
-  // TODO texto, só notamos onde o texto encosta num gráfico (número no círculo,
-  // "Investimento Total" no box, ícone × título). A correção envolve cada FOLHA
-  // de texto num <span> inline e o levanta por 0,48 × font-size — SOMENTE no
-  // clone capturado, sem mexer no DOM em tela. Gráficos (círculos, boxes,
-  // bordas, ícones SVG) não se movem, então tudo volta a alinhar com <0,5px.
-  const RASTER_LIFT_K = 0.48;
-  function liftTextForRaster(clonedDoc) {
-    try {
-      const win = clonedDoc.defaultView || window;
-      const scope = clonedDoc.querySelector('.doc-sizer') || clonedDoc.body;
-      if (!scope) return;
-      // Percorre TODO NÓ DE TEXTO (não elementos) e envolve cada um num <span>
-      // inline elevado por 0,48 × font-size do pai. Operar em nós de texto (e
-      // não em elementos-folha) é essencial: assim um texto solto que convive
-      // com um elemento irmão (conteúdo misto, ex.: "Nº " + <span>id</span>)
-      // também é elevado — senão metade subiria e metade não (desalinhamento).
-      const walker = clonedDoc.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null);
-      const nodes = [];
-      let n;
-      while ((n = walker.nextNode())) { if (n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n); }
-      nodes.forEach((tn) => {
-        const parent = tn.parentNode;
-        // A SOLUÇÃO DEFINITIVA (Versão 2):
-        // 1. Não podemos usar display: inline-block, pois ele força tabelas e flex-boxes
-        //    a expandirem para a largura máxima do texto, quebrando o layout.
-        // 2. Não podemos usar NBSP (\u00A0), pois ele impede a quebra de linha.
-        // 3. Voltamos ao position: relative original (que preserva o layout perfeitamente).
-        // 4. Adicionamos white-space: pre-wrap, que instrui o html2canvas a preservar
-        //    os espaços em branco, corrigindo o bug de colapso de espaços sem quebrar o layout!
-        const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
-        const span = clonedDoc.createElement('span');
-        span.style.position = 'relative';
-        span.style.top = `-${RASTER_LIFT_K * fs}px`;
-        span.style.whiteSpace = 'pre-wrap';
-        parent.replaceChild(span, tn);
-        span.appendChild(tn);
-      });
-    } catch (e) {}
-  }
+  // NOTA: a função liftTextForRaster foi REMOVIDA.
+  // Ela tentava corrigir um deslocamento cosmético de ~6px na baseline do
+  // html2canvas envolvendo cada nó de texto num <span> posicionado. Porém,
+  // qualquer manipulação do DOM no clone dispara bugs graves do html2canvas:
+  //   - Colapso de espaços entre palavras ("Lucas Feitosa" → "LucasFeitosa")
+  //   - Corte de textos multi-linha (introdução cortada)
+  //   - Expansão de colunas em tabelas/flex (layout quebrado)
+  //   - Desalinhamento de ícones SVG em relação ao texto
+  // A solução definitiva é NÃO manipular o DOM do clone. O PDF agora
+  // renderiza exatamente igual à tela — fiel pixel a pixel.
 
   async function downloadProposalPdf(p, opts) {
     opts = opts || {};
@@ -104,7 +72,7 @@
         const el = pages[i];
         const pw = el.offsetWidth, ph = el.offsetHeight;
         const sx = PW / pw, sy = PH / ph;           // px → pt por eixo
-        const canvas = await h2c(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false, width: pw, height: ph, windowWidth: pw, windowHeight: ph, onclone: liftTextForRaster });
+        const canvas = await h2c(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false, width: pw, height: ph, windowWidth: pw, windowHeight: ph });
         if (i > 0) doc.addPage();
         doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, PW, PH, undefined, 'FAST');
 
