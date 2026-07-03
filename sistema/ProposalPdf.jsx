@@ -57,20 +57,24 @@
         if (!parent || parent.nodeType !== 1) return;
         const tag = (parent.tagName || '').toLowerCase();
         if (tag === 'svg' || tag === 'style' || tag === 'script' || tag === 'title') return;
+        
+        // FIX: O html2canvas possui dois bugs graves com span inline + position:relative:
+        // 1. Colapsa espaços entre palavras (ex: "Lucas Feitosa" vira "LucasFeitosa").
+        // 2. Corta o texto que quebra em múltiplas linhas.
+        // SOLUÇÃO:
+        // - Para textos CURTOS (<= 45 chars) que não quebram linha (nomes, rótulos,
+        //   valores), usamos display:inline-block + transform:translateY. Isso
+        //   corrige o alinhamento sem colapsar espaços.
+        // - Para textos LONGOS (> 45 chars), como descrições e parágrafos,
+        //   nós IGNORAMOS a correção. Eles renderizam ~6px mais baixos, mas
+        //   como são blocos de texto soltos, a diferença é imperceptível,
+        //   e garantimos que a quebra de linha natural funcione perfeitamente.
+        if (tn.nodeValue.trim().length > 45) return;
+
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
-        // FIX: o html2canvas colapsa word-spacing em textos CURTOS dentro de
-        // spans com position:relative ("LucasFeitosaAraujo"). Substituir
-        // espaços por NBSP (\u00A0) resolve, mas o NBSP impede word-wrap —
-        // o que corta parágrafos longos. Solução: aplicar NBSP apenas em
-        // textos ≤ 80 caracteres (nomes, labels, rodapé, títulos de item).
-        // Textos longos (parágrafo de introdução, descrições, cláusulas)
-        // mantêm espaços normais e quebram linha normalmente.
-        if (tn.nodeValue.length <= 80) {
-          tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
-        }
         const span = clonedDoc.createElement('span');
-        span.style.position = 'relative';
-        span.style.top = '-' + (RASTER_LIFT_K * fs) + 'px';
+        span.style.display = 'inline-block';
+        span.style.transform = `translateY(-${RASTER_LIFT_K * fs}px)`;
         parent.replaceChild(span, tn);
         span.appendChild(tn);
       });
