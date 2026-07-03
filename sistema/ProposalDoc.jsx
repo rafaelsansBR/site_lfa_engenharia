@@ -347,8 +347,8 @@ function DocPage({ pageIndex, pageCount, p, d, showBrackets, children }) {
 
       {/* rodapé + numeração */}
       <div className="absolute flex items-center justify-between pt-2.5 text-[10px]" style={{ left: PAD_X, right: PAD_X, bottom: 26, borderTop: `1px solid ${d.line}` }}>
-        <span className="truncate max-w-[420px]" style={{ color: d.fg3, letterSpacing: '0.04em' }}>CONFIDENCIAL · {p.cliente}</span>
-        <span style={{ color: d.fg3, letterSpacing: '0.04em' }}>Página {pageIndex + 1} de {pageCount}</span>
+        <span className="truncate max-w-[420px]" style={{ color: d.fg3 }}>CONFIDENCIAL · {p.cliente}</span>
+        <span style={{ color: d.fg3 }}>Página {pageIndex + 1} de {pageCount}</span>
       </div>
     </div>
   );

@@ -54,24 +54,18 @@
       while ((n = walker.nextNode())) { if (n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n); }
       nodes.forEach((tn) => {
         const parent = tn.parentNode;
-        // FIX: O html2canvas possui bugs graves de renderização de texto:
-        // 1. Colapsa espaços entre palavras se o texto estiver dentro de span inline
-        //    com transform/position (ex: "Lucas Feitosa" vira "LucasFeitosa").
-        // 2. Corta o texto que quebra em múltiplas linhas se estiver ajustado.
-        // SOLUÇÃO COMBINADA:
-        // - Para textos curtos/médios (<= 60 chars) que cabem em uma linha:
-        //   Substituímos os espaços por NBSP (\u00A0) para evitar o colapso,
-        //   e usamos inline-block + transform para corrigir o alinhamento.
-        // - Para textos LONGOS (> 60 chars), como descrições e parágrafos:
-        //   nós IGNORAMOS a correção. Eles renderizam ~6px mais baixos, mas
-        //   garantimos que a quebra de linha natural não seja cortada.
-        if (tn.nodeValue.trim().length > 60) return;
-
-        tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
-
+        // A SOLUÇÃO DEFINITIVA para o alinhamento de fonte no html2canvas:
+        // O html2canvas sofre com 2 bugs severos:
+        // 1. Corta textos multi-linhas que estão em elementos inline com position:relative.
+        // 2. Remove os espaços entre as palavras quando manipulamos spans, a não ser que usemos NBSP (que quebra os layouts).
+        // A única combinação que salva:
+        // - display: inline-block (foge do bug de corte multi-linha)
+        // - white-space: pre-wrap (força o html2canvas a respeitar os espaços normais e permite quebra de linha)
+        // Com isso, aplicamos a correção em TODOS os textos, mantendo o alinhamento de ícones e sem quebrar colunas!
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
         const span = clonedDoc.createElement('span');
         span.style.display = 'inline-block';
+        span.style.whiteSpace = 'pre-wrap';
         span.style.transform = `translateY(-${RASTER_LIFT_K * fs}px)`;
         parent.replaceChild(span, tn);
         span.appendChild(tn);
