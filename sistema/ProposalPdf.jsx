@@ -54,19 +54,18 @@
       while ((n = walker.nextNode())) { if (n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n); }
       nodes.forEach((tn) => {
         const parent = tn.parentNode;
-        // A SOLUÇÃO DEFINITIVA para o alinhamento de fonte no html2canvas:
-        // O html2canvas sofre com 2 bugs severos:
-        // 1. Corta textos multi-linhas que estão em elementos inline com position:relative.
-        // 2. Remove os espaços entre as palavras quando manipulamos spans, a não ser que usemos NBSP (que quebra os layouts).
-        // A única combinação que salva:
-        // - display: inline-block (foge do bug de corte multi-linha)
-        // - white-space: pre-wrap (força o html2canvas a respeitar os espaços normais e permite quebra de linha)
-        // Com isso, aplicamos a correção em TODOS os textos, mantendo o alinhamento de ícones e sem quebrar colunas!
+        // A SOLUÇÃO DEFINITIVA (Versão 2):
+        // 1. Não podemos usar display: inline-block, pois ele força tabelas e flex-boxes
+        //    a expandirem para a largura máxima do texto, quebrando o layout.
+        // 2. Não podemos usar NBSP (\u00A0), pois ele impede a quebra de linha.
+        // 3. Voltamos ao position: relative original (que preserva o layout perfeitamente).
+        // 4. Adicionamos white-space: pre-wrap, que instrui o html2canvas a preservar
+        //    os espaços em branco, corrigindo o bug de colapso de espaços sem quebrar o layout!
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
         const span = clonedDoc.createElement('span');
-        span.style.display = 'inline-block';
+        span.style.position = 'relative';
+        span.style.top = `-${RASTER_LIFT_K * fs}px`;
         span.style.whiteSpace = 'pre-wrap';
-        span.style.transform = `translateY(-${RASTER_LIFT_K * fs}px)`;
         parent.replaceChild(span, tn);
         span.appendChild(tn);
       });
