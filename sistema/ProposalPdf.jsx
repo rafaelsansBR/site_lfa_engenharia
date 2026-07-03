@@ -54,22 +54,20 @@
       while ((n = walker.nextNode())) { if (n.nodeValue && /\S/.test(n.nodeValue)) nodes.push(n); }
       nodes.forEach((tn) => {
         const parent = tn.parentNode;
-        if (!parent || parent.nodeType !== 1) return;
-        const tag = (parent.tagName || '').toLowerCase();
-        if (tag === 'svg' || tag === 'style' || tag === 'script' || tag === 'title') return;
-        
-        // FIX: O html2canvas possui dois bugs graves com span inline + position:relative:
-        // 1. Colapsa espaços entre palavras (ex: "Lucas Feitosa" vira "LucasFeitosa").
-        // 2. Corta o texto que quebra em múltiplas linhas.
-        // SOLUÇÃO:
-        // - Para textos CURTOS (<= 45 chars) que não quebram linha (nomes, rótulos,
-        //   valores), usamos display:inline-block + transform:translateY. Isso
-        //   corrige o alinhamento sem colapsar espaços.
-        // - Para textos LONGOS (> 45 chars), como descrições e parágrafos,
+        // FIX: O html2canvas possui bugs graves de renderização de texto:
+        // 1. Colapsa espaços entre palavras se o texto estiver dentro de span inline
+        //    com transform/position (ex: "Lucas Feitosa" vira "LucasFeitosa").
+        // 2. Corta o texto que quebra em múltiplas linhas se estiver ajustado.
+        // SOLUÇÃO COMBINADA:
+        // - Para textos curtos/médios (<= 60 chars) que cabem em uma linha:
+        //   Substituímos os espaços por NBSP (\u00A0) para evitar o colapso,
+        //   e usamos inline-block + transform para corrigir o alinhamento.
+        // - Para textos LONGOS (> 60 chars), como descrições e parágrafos:
         //   nós IGNORAMOS a correção. Eles renderizam ~6px mais baixos, mas
-        //   como são blocos de texto soltos, a diferença é imperceptível,
-        //   e garantimos que a quebra de linha natural funcione perfeitamente.
-        if (tn.nodeValue.trim().length > 45) return;
+        //   garantimos que a quebra de linha natural não seja cortada.
+        if (tn.nodeValue.trim().length > 60) return;
+
+        tn.nodeValue = tn.nodeValue.replace(/ /g, '\u00A0');
 
         const fs = parseFloat(win.getComputedStyle(parent).fontSize) || 14;
         const span = clonedDoc.createElement('span');
@@ -142,4 +140,3 @@
 
   window.downloadProposalPdf = downloadProposalPdf;
 })();
-
